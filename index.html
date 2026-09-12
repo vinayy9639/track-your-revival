@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Track You Revival ó Don't just learn from a screen. Learn with someone.</title>
+<title>Track You Revival ‚Äî Don't just learn from a screen. Learn with someone.</title>
 <style>
   * { box-sizing: border-box; }
   body {
@@ -902,7 +902,7 @@
 <section class="hero">
   <div class="hero-inner">
     <h1>Don't just learn from a screen. Learn with someone.</h1>
-    <p>Set your topic levels, find study partners, read peers' notes, and watch topic videos ó or add your own.</p>
+    <p>Set your topic levels, find study partners, read peers' notes, and watch topic videos ‚Äî or add your own.</p>
   </div>
 </section>
 
@@ -912,7 +912,7 @@
       <div class="head-row">
         <div>
           <h2>Your topic levels</h2>
-          <p>Tap a number 1ñ5 for each topic. 1ñ2 means you need help, 4ñ5 means you can teach it.</p>
+          <p>Tap a number 1‚Äì5 for each topic. 1‚Äì2 means you need help, 4‚Äì5 means you can teach it.</p>
         </div>
         <button class="add-topic-btn" id="addTopicBtn" type="button">
           <span>+</span> Add topic
@@ -942,7 +942,7 @@
   <section class="panel">
     <div class="panel-head">
       <h2>Your study partners</h2>
-      <p id="matchSub">Ranked by how much you can learn from them ó and how much they can learn from you.</p>
+      <p id="matchSub">Ranked by how much you can learn from them ‚Äî and how much they can learn from you.</p>
     </div>
     <div class="match-list" id="matchList"></div>
   </section>
@@ -954,7 +954,7 @@
       <div class="head-row">
         <div>
           <h2>Study notes</h2>
-          <p>Pick a topic to read shared notes ó or add your own to help others.</p>
+          <p>Pick a topic to read shared notes ‚Äî or add your own to help others.</p>
         </div>
         <button class="add-topic-btn" id="addNoteBtn" type="button">
           <span>+</span> Add note
@@ -964,7 +964,7 @@
     <div class="notes-topics" id="notesTopics"></div>
     <div class="notes-body">
       <div class="notes-header">
-        <h3 id="notesTopicName">ó</h3>
+        <h3 id="notesTopicName">‚Äî</h3>
         <span class="notes-count" id="notesCount"></span>
         <span class="auto-provided" id="autoBadge" hidden>Auto-provided for this topic</span>
       </div>
@@ -979,7 +979,7 @@
       <div class="head-row">
         <div>
           <h2>Study videos</h2>
-          <p>Pick a topic to watch a video explanation ó or add one that helped you.</p>
+          <p>Pick a topic to watch a video explanation ‚Äî or add one that helped you.</p>
         </div>
         <button class="add-topic-btn" id="addVideoBtn" type="button">
           <span>+</span> Add video
@@ -989,7 +989,7 @@
     <div class="notes-topics" id="videoTopics"></div>
     <div class="videos-body">
       <div class="notes-header">
-        <h3 id="videoTopicName">ó</h3>
+        <h3 id="videoTopicName">‚Äî</h3>
         <span class="notes-count" id="videoCount"></span>
         <span class="auto-provided" id="videoAutoBadge" hidden>Curated for this topic</span>
       </div>
@@ -1163,19 +1163,19 @@ const PEER_AUTHORS = [
 const AUTO_TIMES = ['2 days ago', '4 days ago', '1 week ago', '2 weeks ago', '3 weeks ago', '1 month ago'];
 
 /* =========================================================
-   AUTO-NOTE LIBRARY ó keyword matching
+   AUTO-NOTE LIBRARY ‚Äî keyword matching
    ========================================================= */
 const KEYWORD_NOTE_LIBRARY = [
   {
     keywords: ['algebra', 'matrices', 'matrix', 'determinant', 'vector space', 'eigen', 'linear equation'],
     notes: [
-      { title: 'Solving linear systems ó elimination first',
-        content: 'For 2ñ3 unknowns, use Gauss elimination:\n\n1. Write the augmented matrix.\n2. Use row operations to get upper-triangular form.\n3. Back-substitute from the bottom up.\n\nWhy elimination over substitution? It scales better and the row operations are easy to verify. Always check by plugging the answer back into the original equations.' },
-      { title: 'Matrix multiplication ó rows meet columns',
-        content: '(AB)?? = (row i of A) ∑ (column j of B)\n\nDimension rule: if A is m◊n and B is n◊p, then AB is m◊p. The inner dimensions must match.\n\nRemember: AB ? BA in general. Matrix multiplication is NOT commutative ó this single fact explains most "surprising" linear algebra results.' },
-      { title: 'Determinants ó what they actually mean',
-        content: 'det(A) is the factor by which A scales area (2D) or volume (3D).\n\nKey facts:\nï det(A) = 0 ? A is singular (no inverse).\nï det(AB) = det(A)∑det(B).\nï det(A?) = det(A).\nï Swapping two rows flips the sign.\n\nGeometric intuition: singular matrices squash space onto a lower dimension ó that is why they cannot be inverted.' },
-      { title: 'Eigenvalues ó the directions that do not rotate',
+      { title: 'Solving linear systems ‚Äî elimination first',
+        content: 'For 2‚Äì3 unknowns, use Gauss elimination:\n\n1. Write the augmented matrix.\n2. Use row operations to get upper-triangular form.\n3. Back-substitute from the bottom up.\n\nWhy elimination over substitution? It scales better and the row operations are easy to verify. Always check by plugging the answer back into the original equations.' },
+      { title: 'Matrix multiplication ‚Äî rows meet columns',
+        content: '(AB)?? = (row i of A) ¬∑ (column j of B)\n\nDimension rule: if A is m√ón and B is n√óp, then AB is m√óp. The inner dimensions must match.\n\nRemember: AB ? BA in general. Matrix multiplication is NOT commutative ‚Äî this single fact explains most "surprising" linear algebra results.' },
+      { title: 'Determinants ‚Äî what they actually mean',
+        content: 'det(A) is the factor by which A scales area (2D) or volume (3D).\n\nKey facts:\n‚Ä¢ det(A) = 0 ? A is singular (no inverse).\n‚Ä¢ det(AB) = det(A)¬∑det(B).\n‚Ä¢ det(A?) = det(A).\n‚Ä¢ Swapping two rows flips the sign.\n\nGeometric intuition: singular matrices squash space onto a lower dimension ‚Äî that is why they cannot be inverted.' },
+      { title: 'Eigenvalues ‚Äî the directions that do not rotate',
         content: 'Av = ?v means: applying A to v just scales it by ?.\n\nTo find eigenvalues: solve det(A - ?I) = 0.\nTo find eigenvectors: plug each ? back and solve (A - ?I)v = 0.\n\nUses: principal component analysis (PCA), stability analysis, vibration modes, Google PageRank.' }
     ]
   },
@@ -1183,34 +1183,34 @@ const KEYWORD_NOTE_LIBRARY = [
     keywords: ['trigonometry', 'trig', 'sine', 'cosine', 'tangent', 'triangle', 'geometry'],
     notes: [
       { title: 'The unit circle beats memorising tables',
-        content: 'Every trig value comes from the unit circle ó a circle of radius 1 centred at the origin.\n\nï cos ? = x-coordinate\nï sin ? = y-coordinate\nï tan ? = sin ? / cos ?\n\nQuadrant signs ó "All Students Take Calculus":\nï Q1: All positive\nï Q2: Sin positive\nï Q3: Tan positive\nï Q4: Cos positive' },
-      { title: 'Sine rule vs cosine rule ó pick the right one',
-        content: 'SINE RULE: a/sin A = b/sin B = c/sin C\nUse when you know: two angles + one side, OR two sides + one non-included angle.\n\nCOSINE RULE: c≤ = a≤ + b≤ - 2ab∑cos C\nUse when you know: three sides, OR two sides + the included angle.\n\nQuick call: if the angle you know is BETWEEN the two sides you know, use cosine rule.' },
+        content: 'Every trig value comes from the unit circle ‚Äî a circle of radius 1 centred at the origin.\n\n‚Ä¢ cos ? = x-coordinate\n‚Ä¢ sin ? = y-coordinate\n‚Ä¢ tan ? = sin ? / cos ?\n\nQuadrant signs ‚Äî "All Students Take Calculus":\n‚Ä¢ Q1: All positive\n‚Ä¢ Q2: Sin positive\n‚Ä¢ Q3: Tan positive\n‚Ä¢ Q4: Cos positive' },
+      { title: 'Sine rule vs cosine rule ‚Äî pick the right one',
+        content: 'SINE RULE: a/sin A = b/sin B = c/sin C\nUse when you know: two angles + one side, OR two sides + one non-included angle.\n\nCOSINE RULE: c¬≤ = a¬≤ + b¬≤ - 2ab¬∑cos C\nUse when you know: three sides, OR two sides + the included angle.\n\nQuick call: if the angle you know is BETWEEN the two sides you know, use cosine rule.' },
       { title: 'Six trig identities you must know cold',
-        content: '1. sin≤? + cos≤? = 1\n2. 1 + tan≤? = sec≤?\n3. 1 + cot≤? = cosec≤?\n4. sin(A ± B) = sinA cosB ± cosA sinB\n5. cos(A ± B) = cosA cosB ± sinA sinB\n6. sin 2? = 2 sin? cos?\n\nThese six cover almost every school and first-year exam identity.' }
+        content: '1. sin¬≤? + cos¬≤? = 1\n2. 1 + tan¬≤? = sec¬≤?\n3. 1 + cot¬≤? = cosec¬≤?\n4. sin(A ¬± B) = sinA cosB ¬± cosA sinB\n5. cos(A ¬± B) = cosA cosB ¬± sinA sinB\n6. sin 2? = 2 sin? cos?\n\nThese six cover almost every school and first-year exam identity.' }
     ]
   },
   {
     keywords: ['statistics', 'stats', 'data analysis', 'hypothesis', 'regression'],
     notes: [
-      { title: 'Mean vs median vs mode ó when each lies',
+      { title: 'Mean vs median vs mode ‚Äî when each lies',
         content: 'MEAN: sum / count. Sensitive to outliers. One extreme value skews it massively.\n\nMEDIAN: middle value when sorted. Robust to outliers.\n\nMODE: most frequent value. Only meaningful for categorical or discrete data.\n\nRule: if your data has outliers (income, house prices), report the median.' },
       { title: 'Standard deviation in one paragraph',
         content: 'SD measures how spread out values are from the mean.\n\nSmall SD ? values cluster near the mean.\nLarge SD ? values spread widely.\n\nSteps: take deviations, square them (to kill signs), average them (variance), then take the square root.\n\nFor a normal distribution: 68% within 1 SD, 95% within 2 SD, 99.7% within 3 SD.' },
-      { title: 'Hypothesis testing ó the 5-step routine',
-        content: '1. State H0 (null ó no effect) and H1 (alternative).\n2. Choose a significance level a (usually 0.05).\n3. Compute the test statistic (z, t, ?≤, F).\n4. Find the p-value.\n5. Compare: p < a ? reject H0. Otherwise, fail to reject.\n\nRemember: "fail to reject" ? "accept". Absence of evidence is not evidence of absence.' },
+      { title: 'Hypothesis testing ‚Äî the 5-step routine',
+        content: '1. State H0 (null ‚Äî no effect) and H1 (alternative).\n2. Choose a significance level a (usually 0.05).\n3. Compute the test statistic (z, t, ?¬≤, F).\n4. Find the p-value.\n5. Compare: p < a ? reject H0. Otherwise, fail to reject.\n\nRemember: "fail to reject" ? "accept". Absence of evidence is not evidence of absence.' },
       { title: 'Correlation is not causation',
-        content: 'Two variables can move together without one causing the other. Common explanations:\n\nï Reverse causation (B causes A)\nï Common cause (C causes both A and B)\nï Coincidence (spurious correlation)\n\nTo argue causation, you need temporal order, dose-response, and rule out confounders ó ideally via a controlled experiment.' }
+        content: 'Two variables can move together without one causing the other. Common explanations:\n\n‚Ä¢ Reverse causation (B causes A)\n‚Ä¢ Common cause (C causes both A and B)\n‚Ä¢ Coincidence (spurious correlation)\n\nTo argue causation, you need temporal order, dose-response, and rule out confounders ‚Äî ideally via a controlled experiment.' }
     ]
   },
   {
     keywords: ['mechanic', 'kinematic', 'newton', 'force', 'motion', 'gravity', 'projectile'],
     notes: [
       { title: "Newton's three laws as a problem-solving checklist",
-        content: '1st law (inertia): if net force = 0, velocity is constant. Use it to spot when forces must balance.\n\n2nd law: F_net = ma. Always find the net force first, then divide by mass.\n\n3rd law: equal and opposite reactions ó but they act on DIFFERENT bodies, so they never cancel.\n\nChecklist: draw the body ? list all forces ? add as vectors ? apply F = ma.' },
-      { title: 'Projectile motion ó always split x and y',
-        content: 'The two axes are INDEPENDENT. That is the entire trick.\n\nHorizontal (x): constant velocity.\nx = u∑cos? ∑ t\n\nVertical (y): constant acceleration g = 9.8 m/s≤.\ny = u∑sin? ∑ t - Ωgt≤\nv_y = u∑sin? - g∑t\n\nTime of flight: t = 2∑u∑sin? / g\nRange: R = u≤∑sin(2?) / g\nMax height: H = u≤∑sin≤? / (2g)' },
-      { title: 'Free body diagrams ó draw it every single time',
+        content: '1st law (inertia): if net force = 0, velocity is constant. Use it to spot when forces must balance.\n\n2nd law: F_net = ma. Always find the net force first, then divide by mass.\n\n3rd law: equal and opposite reactions ‚Äî but they act on DIFFERENT bodies, so they never cancel.\n\nChecklist: draw the body ? list all forces ? add as vectors ? apply F = ma.' },
+      { title: 'Projectile motion ‚Äî always split x and y',
+        content: 'The two axes are INDEPENDENT. That is the entire trick.\n\nHorizontal (x): constant velocity.\nx = u¬∑cos? ¬∑ t\n\nVertical (y): constant acceleration g = 9.8 m/s¬≤.\ny = u¬∑sin? ¬∑ t - ¬Ωgt¬≤\nv_y = u¬∑sin? - g¬∑t\n\nTime of flight: t = 2¬∑u¬∑sin? / g\nRange: R = u¬≤¬∑sin(2?) / g\nMax height: H = u¬≤¬∑sin¬≤? / (2g)' },
+      { title: 'Free body diagrams ‚Äî draw it every single time',
         content: 'A free body diagram (FBD) shows ALL forces acting ON a single object.\n\nSteps:\n1. Isolate the object.\n2. Draw arrows for weight, normal force, friction, tension, applied force.\n3. Label each force.\n4. Choose axes aligned with motion if possible.\n5. Apply F = ma along each axis.\n\nSkipping the FBD is the #1 reason students get mechanics wrong.' }
     ]
   },
@@ -1218,7 +1218,7 @@ const KEYWORD_NOTE_LIBRARY = [
     keywords: ['optics', 'light', 'lens', 'mirror', 'refraction', 'reflection'],
     notes: [
       { title: 'Lens and mirror sign conventions (Cartesian)',
-        content: 'Measure everything from the pole / optical centre.\nï Distances in the direction of incident light ? positive\nï Distances opposite to incident light ? negative\n\nMirror formula: 1/v + 1/u = 1/f\nLens formula:   1/v - 1/u = 1/f\n\nFocal length: concave mirror / convex lens ? positive. Convex mirror / concave lens ? negative.' },
+        content: 'Measure everything from the pole / optical centre.\n‚Ä¢ Distances in the direction of incident light ? positive\n‚Ä¢ Distances opposite to incident light ? negative\n\nMirror formula: 1/v + 1/u = 1/f\nLens formula:   1/v - 1/u = 1/f\n\nFocal length: concave mirror / convex lens ? positive. Convex mirror / concave lens ? negative.' },
       { title: "Snell's law and total internal reflection",
         content: "Snell's law: n1 sin ?1 = n2 sin ?2\n\nWhen light goes from denser to rarer (n1 > n2), the refracted ray bends AWAY from the normal. At the critical angle, it stops refracting.\n\nCritical angle: sin ?_c = n2 / n1\n\nBeyond ?_c, 100% of light reflects back inside. This is how optical fibres and a diamond's sparkle work." }
     ]
@@ -1226,10 +1226,10 @@ const KEYWORD_NOTE_LIBRARY = [
   {
     keywords: ['electric', 'current', 'voltage', 'circuit', 'resistance', 'ohm', 'magnet'],
     notes: [
-      { title: "Ohm's law and power ó the three formulas",
-        content: 'V = I∑R  (Ohm\'s law)\nP = V∑I  (power)\nP = I≤R = V≤/R  (substitutions)\n\nUnits: V (volts), I (amps), R (ohms), P (watts).\n\nKey insight: double the voltage across a fixed resistor ? power QUADRUPLES (P ? V≤).' },
-      { title: 'Series vs parallel ó at a glance',
-        content: 'SERIES:\nï Same current through every component.\nï Voltages add.\nï R_eq = R1 + R2 + ...\n\nPARALLEL:\nï Same voltage across every branch.\nï Currents add.\nï 1/R_eq = 1/R1 + 1/R2 + ...\n\nHouse wiring is parallel ó that is why every appliance gets the full 220V.' },
+      { title: "Ohm's law and power ‚Äî the three formulas",
+        content: 'V = I¬∑R  (Ohm\'s law)\nP = V¬∑I  (power)\nP = I¬≤R = V¬≤/R  (substitutions)\n\nUnits: V (volts), I (amps), R (ohms), P (watts).\n\nKey insight: double the voltage across a fixed resistor ? power QUADRUPLES (P ? V¬≤).' },
+      { title: 'Series vs parallel ‚Äî at a glance',
+        content: 'SERIES:\n‚Ä¢ Same current through every component.\n‚Ä¢ Voltages add.\n‚Ä¢ R_eq = R1 + R2 + ...\n\nPARALLEL:\n‚Ä¢ Same voltage across every branch.\n‚Ä¢ Currents add.\n‚Ä¢ 1/R_eq = 1/R1 + 1/R2 + ...\n\nHouse wiring is parallel ‚Äî that is why every appliance gets the full 220V.' },
       { title: "Kirchhoff's two laws",
         content: 'KCL (junction rule): sum of currents entering = sum leaving. Charge is conserved.\n\nKVL (loop rule): sum of voltage changes around any closed loop = 0. Energy is conserved.\n\nMethod:\n1. Label all currents with assumed directions.\n2. Apply KCL at junctions.\n3. Apply KVL around loops.\n4. Solve the linear system.\n\nIf a current comes out negative, its real direction is opposite to your assumption.' }
     ]
@@ -1238,8 +1238,8 @@ const KEYWORD_NOTE_LIBRARY = [
     keywords: ['java ', 'java,', 'oop', 'oops', 'object oriented', 'inheritance', 'polymorphism'],
     notes: [
       { title: 'OOP in four pillars (with a real example)',
-        content: 'ENCAPSULATION ó bundle data + methods, hide internals.\nINHERITANCE ó a class inherits from another (Car extends Vehicle).\nPOLYMORPHISM ó same interface, different behaviour (shape.area() works for Circle and Square).\nABSTRACTION ó expose what, hide how (List interface, ArrayList implementation).\n\nMnemonic: A PIE (Abstraction, Polymorphism, Inheritance, Encapsulation).' },
-      { title: '== vs .equals() ó the classic Java trap',
+        content: 'ENCAPSULATION ‚Äî bundle data + methods, hide internals.\nINHERITANCE ‚Äî a class inherits from another (Car extends Vehicle).\nPOLYMORPHISM ‚Äî same interface, different behaviour (shape.area() works for Circle and Square).\nABSTRACTION ‚Äî expose what, hide how (List interface, ArrayList implementation).\n\nMnemonic: A PIE (Abstraction, Polymorphism, Inheritance, Encapsulation).' },
+      { title: '== vs .equals() ‚Äî the classic Java trap',
         content: '== compares references (same object?).\n.equals() compares content (logically equal?).\n\nExample:\n  String a = new String("hi");\n  String b = new String("hi");\n  a == b       // false\n  a.equals(b)  // true\n\nRule: for objects use .equals(). For primitives (int, char, boolean) use ==.' },
       { title: 'ArrayList vs LinkedList vs HashMap',
         content: 'ArrayList: dynamic array. Fast random access O(1), slow middle insert/delete O(n). Default choice.\n\nLinkedList: doubly linked. Fast insert/delete at ends O(1), slow random access O(n).\n\nHashMap: key-value pairs. O(1) average lookup. Great for counting and caching.\n\nRule: index access? ArrayList. Head/tail ops? LinkedList. Key lookup? HashMap.' }
@@ -1249,33 +1249,33 @@ const KEYWORD_NOTE_LIBRARY = [
     keywords: ['python', 'pandas', 'numpy', 'django', 'flask'],
     notes: [
       { title: "Python's four core containers",
-        content: 'LIST: ordered, mutable, allows duplicates. [1, 2, 3]\nTUPLE: ordered, immutable, allows duplicates. (1, 2, 3)\nSET: unordered, mutable, no duplicates. {1, 2, 3}\nDICT: key-value pairs, unique keys. {"a": 1}\n\nQuick guide:\nï Order + change? ? list\nï Order + safety? ? tuple\nï Uniqueness + fast membership? ? set\nï Key lookup? ? dict' },
-      { title: 'List comprehensions ó cleaner loops',
+        content: 'LIST: ordered, mutable, allows duplicates. [1, 2, 3]\nTUPLE: ordered, immutable, allows duplicates. (1, 2, 3)\nSET: unordered, mutable, no duplicates. {1, 2, 3}\nDICT: key-value pairs, unique keys. {"a": 1}\n\nQuick guide:\n‚Ä¢ Order + change? ? list\n‚Ä¢ Order + safety? ? tuple\n‚Ä¢ Uniqueness + fast membership? ? set\n‚Ä¢ Key lookup? ? dict' },
+      { title: 'List comprehensions ‚Äî cleaner loops',
         content: 'Instead of:\n  squares = []\n  for x in range(10):\n      squares.append(x*x)\n\nWrite:\n  squares = [x*x for x in range(10)]\n\nWith a condition:\n  evens = [x for x in range(20) if x % 2 == 0]\n\nReadability rule: if it needs more than one "for" or one "if", use a regular loop.' },
       { title: 'Three built-ins that clean up your code',
-        content: 'enumerate ó index AND value:\n  for i, item in enumerate(items):\n\nzip ó pair up two lists:\n  for name, score in zip(names, scores):\n\ndict.items() ó keys and values:\n  for key, val in my_dict.items():\n\nThese three replace 90% of the "i = 0 ... i += 1" patterns beginners write.' }
+        content: 'enumerate ‚Äî index AND value:\n  for i, item in enumerate(items):\n\nzip ‚Äî pair up two lists:\n  for name, score in zip(names, scores):\n\ndict.items() ‚Äî keys and values:\n  for key, val in my_dict.items():\n\nThese three replace 90% of the "i = 0 ... i += 1" patterns beginners write.' }
     ]
   },
   {
     keywords: [' c ', 'c++', 'cpp', 'pointer', 'malloc', 'memory management'],
     notes: [
       { title: 'Pointers in one page',
-        content: 'A pointer stores the ADDRESS of another variable.\n\n  int x = 5;\n  int *p = &x;   // p holds address of x\n  *p = 10;       // now x is 10\n\nï &x  ? address-of operator\nï *p  ? dereference operator\n\nCommon mistakes:\nï Uninitialised pointer (undefined behaviour).\nï Forgetting to free malloc\'d memory (leak).\nï Dereferencing NULL or a dangling pointer (crash).' },
+        content: 'A pointer stores the ADDRESS of another variable.\n\n  int x = 5;\n  int *p = &x;   // p holds address of x\n  *p = 10;       // now x is 10\n\n‚Ä¢ &x  ? address-of operator\n‚Ä¢ *p  ? dereference operator\n\nCommon mistakes:\n‚Ä¢ Uninitialised pointer (undefined behaviour).\n‚Ä¢ Forgetting to free malloc\'d memory (leak).\n‚Ä¢ Dereferencing NULL or a dangling pointer (crash).' },
       { title: 'Stack vs heap memory',
-        content: 'STACK:\nï Automatic allocation when a function is called.\nï Fast.\nï Limited size (a few MB).\nï Freed automatically on return.\n\nHEAP:\nï Manual allocation via malloc / new.\nï Larger, slower.\nï You must free it.\nï Persists until freed.\n\nRule of thumb: small, short-lived ? stack. Large or long-lived ? heap.' },
+        content: 'STACK:\n‚Ä¢ Automatic allocation when a function is called.\n‚Ä¢ Fast.\n‚Ä¢ Limited size (a few MB).\n‚Ä¢ Freed automatically on return.\n\nHEAP:\n‚Ä¢ Manual allocation via malloc / new.\n‚Ä¢ Larger, slower.\n‚Ä¢ You must free it.\n‚Ä¢ Persists until freed.\n\nRule of thumb: small, short-lived ? stack. Large or long-lived ? heap.' },
       { title: 'Pass by value vs pass by reference',
-        content: 'Pass by value: function gets a COPY. Changes inside do not affect the original.\n\nPass by reference (via pointer or &): function works on the ORIGINAL. Changes persist.\n\nIn C: pass a pointer.\nIn C++: use references ó int& is cleaner than int*.\n\nWhen to use which: pass by value for small primitives, pass by const reference for large objects.' }
+        content: 'Pass by value: function gets a COPY. Changes inside do not affect the original.\n\nPass by reference (via pointer or &): function works on the ORIGINAL. Changes persist.\n\nIn C: pass a pointer.\nIn C++: use references ‚Äî int& is cleaner than int*.\n\nWhen to use which: pass by value for small primitives, pass by const reference for large objects.' }
     ]
   },
   {
     keywords: ['javascript', 'react', 'node', 'html', 'css', 'web development', 'frontend', 'front-end'],
     notes: [
-      { title: 'var vs let vs const ó why const wins',
-        content: 'var ó function-scoped, hoisted, can be redeclared. Legacy.\nlet ó block-scoped, can be reassigned.\nconst ó block-scoped, cannot be reassigned.\n\nDefault to const. Switch to let only when you need to reassign. Never use var in modern code.\n\nNote: const objects can still have their properties changed ó const only prevents reassignment of the binding.' },
-      { title: 'JavaScript async ó from callbacks to async/await',
+      { title: 'var vs let vs const ‚Äî why const wins',
+        content: 'var ‚Äî function-scoped, hoisted, can be redeclared. Legacy.\nlet ‚Äî block-scoped, can be reassigned.\nconst ‚Äî block-scoped, cannot be reassigned.\n\nDefault to const. Switch to let only when you need to reassign. Never use var in modern code.\n\nNote: const objects can still have their properties changed ‚Äî const only prevents reassignment of the binding.' },
+      { title: 'JavaScript async ‚Äî from callbacks to async/await',
         content: '1. Callbacks (old): doThing(function(r){...})\n\n2. Promises (better):\n   doThing().then(r => ...).catch(e => ...)\n\n3. async/await (cleanest):\n   async function run() {\n     try { const r = await doThing(); }\n     catch (e) { ... }\n   }\n\nasync/await is just promises with cleaner syntax. Under the hood, same thing.' },
-      { title: 'The DOM ó what it is and how to touch it',
-        content: 'DOM = the browser\'s tree-shaped representation of your HTML.\n\nCommon operations:\nï document.querySelector(".btn")\nï document.querySelectorAll("li")\nï el.textContent = "hi"\nï el.classList.add("active")\nï el.addEventListener("click", fn)\n\nModern frameworks (React, Vue) update the DOM for you ó but raw DOM understanding makes debugging far easier.' }
+      { title: 'The DOM ‚Äî what it is and how to touch it',
+        content: 'DOM = the browser\'s tree-shaped representation of your HTML.\n\nCommon operations:\n‚Ä¢ document.querySelector(".btn")\n‚Ä¢ document.querySelectorAll("li")\n‚Ä¢ el.textContent = "hi"\n‚Ä¢ el.classList.add("active")\n‚Ä¢ el.addEventListener("click", fn)\n\nModern frameworks (React, Vue) update the DOM for you ‚Äî but raw DOM understanding makes debugging far easier.' }
     ]
   },
   {
@@ -1283,23 +1283,23 @@ const KEYWORD_NOTE_LIBRARY = [
     notes: [
       { title: 'Supervised vs unsupervised vs reinforcement',
         content: 'SUPERVISED: labelled data. Predict an output from inputs (classification, regression).\n\nUNSUPERVISED: no labels. Find structure (clustering, dimensionality reduction).\n\nREINFORCEMENT: an agent learns by interacting with an environment and receiving rewards.\n\nQuick decision: labels? ? supervised. No labels? ? unsupervised. Sequential decisions? ? reinforcement.' },
-      { title: 'Overfitting ó signs, causes, fixes',
-        content: 'Signs: great training accuracy, poor validation/test accuracy.\n\nCauses:\nï Model too complex for the data.\nï Too little training data.\nï Training for too long.\n\nFixes:\nï More data or augmentation.\nï Regularisation (L1, L2, dropout).\nï Early stopping.\nï Simpler model.' },
-      { title: 'Bias vs variance ó the central tradeoff',
-        content: 'BIAS: error from wrong assumptions. High bias ? underfitting.\n\nVARIANCE: error from sensitivity to training data. High variance ? overfitting.\n\nTotal error ò bias≤ + variance + noise.\n\nTradeoff: more complex models reduce bias but increase variance. Find the sweet spot via regularisation and cross-validated model selection.' },
+      { title: 'Overfitting ‚Äî signs, causes, fixes',
+        content: 'Signs: great training accuracy, poor validation/test accuracy.\n\nCauses:\n‚Ä¢ Model too complex for the data.\n‚Ä¢ Too little training data.\n‚Ä¢ Training for too long.\n\nFixes:\n‚Ä¢ More data or augmentation.\n‚Ä¢ Regularisation (L1, L2, dropout).\n‚Ä¢ Early stopping.\n‚Ä¢ Simpler model.' },
+      { title: 'Bias vs variance ‚Äî the central tradeoff',
+        content: 'BIAS: error from wrong assumptions. High bias ? underfitting.\n\nVARIANCE: error from sensitivity to training data. High variance ? overfitting.\n\nTotal error Àú bias¬≤ + variance + noise.\n\nTradeoff: more complex models reduce bias but increase variance. Find the sweet spot via regularisation and cross-validated model selection.' },
       { title: 'The ML workflow in 6 steps',
-        content: '1. Frame the problem ó supervised? classification or regression?\n2. Collect & clean the data (this is often 60%+ of the work).\n3. Split: train / validation / test.\n4. Choose a baseline model. Train.\n5. Evaluate on validation. Tune hyperparameters.\n6. Final evaluation on the test set (touch it once).\n\nDeploy, monitor, retrain ó the loop never really ends.' }
+        content: '1. Frame the problem ‚Äî supervised? classification or regression?\n2. Collect & clean the data (this is often 60%+ of the work).\n3. Split: train / validation / test.\n4. Choose a baseline model. Train.\n5. Evaluate on validation. Tune hyperparameters.\n6. Final evaluation on the test set (touch it once).\n\nDeploy, monitor, retrain ‚Äî the loop never really ends.' }
     ]
   },
   {
     keywords: ['operating system', 'process', 'thread', 'scheduling', 'deadlock'],
     notes: [
-      { title: 'Process vs thread ó the difference that matters',
-        content: 'PROCESS: an independent program in execution. Own memory space, own resources.\n\nTHREAD: a lightweight unit inside a process. Shares memory with sibling threads, but has its own stack and registers.\n\nWhy it matters:\nï Threads switch faster and communicate cheaply.\nï But shared memory means race conditions and the need for locks.\nï A crash in one thread can take down the whole process.' },
-      { title: 'CPU scheduling ó FCFS, SJF, Round Robin',
-        content: 'FCFS (First Come First Served): simple, but a long job blocks everyone (convoy effect).\n\nSJF (Shortest Job First): optimal average waiting time, but you must know burst times in advance. Starvation risk.\n\nROUND ROBIN: each process gets a fixed time slice (quantum). Fair and responsive ó the basis of most modern schedulers.\n\nMetrics to compare: waiting time, turnaround time, response time, throughput.' },
-      { title: 'Deadlock ó the four Coffman conditions',
-        content: 'A deadlock needs ALL FOUR simultaneously:\n\n1. Mutual exclusion ó a resource is held exclusively.\n2. Hold and wait ó a process holds one resource while waiting for another.\n3. No preemption ó resources cannot be forcibly taken away.\n4. Circular wait ó a cycle of processes each waiting on the next.\n\nBreak ANY ONE and deadlock becomes impossible. Practical fixes: lock ordering (breaks circular wait), timeouts, or a single global lock.' }
+      { title: 'Process vs thread ‚Äî the difference that matters',
+        content: 'PROCESS: an independent program in execution. Own memory space, own resources.\n\nTHREAD: a lightweight unit inside a process. Shares memory with sibling threads, but has its own stack and registers.\n\nWhy it matters:\n‚Ä¢ Threads switch faster and communicate cheaply.\n‚Ä¢ But shared memory means race conditions and the need for locks.\n‚Ä¢ A crash in one thread can take down the whole process.' },
+      { title: 'CPU scheduling ‚Äî FCFS, SJF, Round Robin',
+        content: 'FCFS (First Come First Served): simple, but a long job blocks everyone (convoy effect).\n\nSJF (Shortest Job First): optimal average waiting time, but you must know burst times in advance. Starvation risk.\n\nROUND ROBIN: each process gets a fixed time slice (quantum). Fair and responsive ‚Äî the basis of most modern schedulers.\n\nMetrics to compare: waiting time, turnaround time, response time, throughput.' },
+      { title: 'Deadlock ‚Äî the four Coffman conditions',
+        content: 'A deadlock needs ALL FOUR simultaneously:\n\n1. Mutual exclusion ‚Äî a resource is held exclusively.\n2. Hold and wait ‚Äî a process holds one resource while waiting for another.\n3. No preemption ‚Äî resources cannot be forcibly taken away.\n4. Circular wait ‚Äî a cycle of processes each waiting on the next.\n\nBreak ANY ONE and deadlock becomes impossible. Practical fixes: lock ordering (breaks circular wait), timeouts, or a single global lock.' }
     ]
   },
   {
@@ -1307,9 +1307,9 @@ const KEYWORD_NOTE_LIBRARY = [
     notes: [
       { title: 'Normalisation in plain English',
         content: '1NF: every cell holds a single atomic value. No lists in a column.\n\n2NF: 1NF + no partial dependency on part of a composite key.\n\n3NF: 2NF + no transitive dependency (non-key column depending on another non-key column).\n\nWhy bother: less duplication, smaller updates, fewer inconsistencies. In practice, most OLTP schemas aim for 3NF and denormalise only where read speed demands it.' },
-      { title: 'SQL joins ó a visual cheat sheet',
+      { title: 'SQL joins ‚Äî a visual cheat sheet',
         content: 'INNER JOIN: rows matching in BOTH tables.\n\nLEFT JOIN: all rows from the left table + matches from the right (NULLs where none).\n\nRIGHT JOIN: mirror of LEFT JOIN.\n\nFULL OUTER JOIN: all rows from both sides, NULLs where there is no match.\n\nCROSS JOIN: every row paired with every row (Cartesian product). Use with care.' },
-      { title: 'Indexes ó speed at a cost',
+      { title: 'Indexes ‚Äî speed at a cost',
         content: 'An index is a sorted structure (usually a B-tree) that lets the engine find rows without scanning the whole table.\n\nUse an index on: columns in WHERE, JOIN, and ORDER BY.\n\nDo NOT index: tiny tables, columns with very few distinct values, or write-heavy columns.\n\nEvery index speeds up reads but slows down INSERT/UPDATE/DELETE, because the index must be maintained too.' }
     ]
   },
@@ -1319,99 +1319,99 @@ const KEYWORD_NOTE_LIBRARY = [
       { title: 'The four laws of thermodynamics in one minute',
         content: 'Zeroth: if A is in equilibrium with B, and B with C, then A is with C. (Defines temperature.)\n\nFirst: energy is conserved. ?U = Q - W.\n\nSecond: entropy of an isolated system never decreases. Heat flows hot ? cold, never the reverse spontaneously.\n\nThird: as T ? 0 K, the entropy of a perfect crystal ? 0. Absolute zero is unreachable.' },
       { title: 'Entropy without the mysticism',
-        content: 'Entropy is a count of how many microscopic arrangements produce the same macroscopic state.\n\nMore arrangements ? higher entropy.\n\nThat is why a shuffled deck stays shuffled: there are overwhelmingly more disordered arrangements than ordered ones.\n\nThe second law is not a force ó it is a statement about probability.' }
+        content: 'Entropy is a count of how many microscopic arrangements produce the same macroscopic state.\n\nMore arrangements ? higher entropy.\n\nThat is why a shuffled deck stays shuffled: there are overwhelmingly more disordered arrangements than ordered ones.\n\nThe second law is not a force ‚Äî it is a statement about probability.' }
     ]
   },
   {
     keywords: ['organic', 'chemistry', 'reaction', 'mole', 'bond', 'alkane', 'functional group'],
     notes: [
       { title: 'Functional groups you must recognise instantly',
-        content: 'ï Hydroxyl óOH ? alcohols\nï Carbonyl C=O ? aldehydes, ketones\nï Carboxyl óCOOH ? carboxylic acids\nï Amine óNH2 ? amines\nï Ester óCOOó ? esters\nï Ether óOó ? ethers\n\nRecognising the group tells you most of the reactivity. Learn the groups before you memorise any reaction.' },
+        content: '‚Ä¢ Hydroxyl ‚ÄîOH ? alcohols\n‚Ä¢ Carbonyl C=O ? aldehydes, ketones\n‚Ä¢ Carboxyl ‚ÄîCOOH ? carboxylic acids\n‚Ä¢ Amine ‚ÄîNH2 ? amines\n‚Ä¢ Ester ‚ÄîCOO‚Äî ? esters\n‚Ä¢ Ether ‚ÄîO‚Äî ? ethers\n\nRecognising the group tells you most of the reactivity. Learn the groups before you memorise any reaction.' },
       { title: 'Nucleophile vs electrophile',
         content: 'NUCLEOPHILE: electron-rich, attacks positive centres. Think "nucleus-loving".\n\nELECTROPHILE: electron-poor, accepts electrons. Think "electron-loving".\n\nA reaction is usually: nucleophile donates a pair ? electrophile accepts.\n\nIf you can label which species is which, you can predict the product in most first-year mechanisms.' },
-      { title: 'SN1 vs SN2 ó how to tell them apart',
+      { title: 'SN1 vs SN2 ‚Äî how to tell them apart',
         content: 'SN2: one concerted step. Rate = k[substrate][nucleophile]. Backside attack ? inversion of configuration. Favoured by primary carbons and polar aprotic solvents.\n\nSN1: two steps via a carbocation. Rate = k[substrate]. Racemisation. Favoured by tertiary carbons and polar protic solvents.\n\nShortcut: primary ? SN2. Tertiary ? SN1. Secondary ? depends.' }
     ]
   },
   {
     keywords: ['accounting', 'account', 'finance', 'balance sheet', 'debit', 'credit', 'ledger'],
     notes: [
-      { title: 'Debit and credit ó finally, a rule that sticks',
-        content: 'Debit (Dr) = left side. Credit (Cr) = right side. That is ALL they mean.\n\nAccounting equation: Assets = Liabilities + Equity\n\nï Increase an asset ? debit it.\nï Increase a liability or equity ? credit it.\nï Revenue increases equity ? credit it.\nï Expenses decrease equity ? debit it.\n\nEvery entry: total debits = total credits. Always.' },
+      { title: 'Debit and credit ‚Äî finally, a rule that sticks',
+        content: 'Debit (Dr) = left side. Credit (Cr) = right side. That is ALL they mean.\n\nAccounting equation: Assets = Liabilities + Equity\n\n‚Ä¢ Increase an asset ? debit it.\n‚Ä¢ Increase a liability or equity ? credit it.\n‚Ä¢ Revenue increases equity ? credit it.\n‚Ä¢ Expenses decrease equity ? debit it.\n\nEvery entry: total debits = total credits. Always.' },
       { title: 'The three financial statements, linked',
-        content: 'INCOME STATEMENT: revenue - expenses = net profit. Covers a period.\n\nBALANCE SHEET: assets = liabilities + equity. A snapshot at one instant.\n\nCASH FLOW STATEMENT: actual cash in and out, split into operating, investing, financing.\n\nThe link: net profit from the income statement flows into retained earnings on the balance sheet. Profit is not cash ó that is why the cash flow statement exists.' }
+        content: 'INCOME STATEMENT: revenue - expenses = net profit. Covers a period.\n\nBALANCE SHEET: assets = liabilities + equity. A snapshot at one instant.\n\nCASH FLOW STATEMENT: actual cash in and out, split into operating, investing, financing.\n\nThe link: net profit from the income statement flows into retained earnings on the balance sheet. Profit is not cash ‚Äî that is why the cash flow statement exists.' }
     ]
   },
   {
     keywords: ['writing', 'essay', 'english', 'grammar', 'composition', 'language'],
     notes: [
       { title: 'The paragraph that never fails',
-        content: '1. Topic sentence ó state the point.\n2. Evidence ó a fact, quote, or example.\n3. Explanation ó why the evidence supports the point.\n4. Link ó connect to the next paragraph or back to the thesis.\n\nOne idea per paragraph. If you have two ideas, you have two paragraphs.' },
+        content: '1. Topic sentence ‚Äî state the point.\n2. Evidence ‚Äî a fact, quote, or example.\n3. Explanation ‚Äî why the evidence supports the point.\n4. Link ‚Äî connect to the next paragraph or back to the thesis.\n\nOne idea per paragraph. If you have two ideas, you have two paragraphs.' },
       { title: 'Cut these five phrases and your writing improves instantly',
-        content: 'ï "In order to" ? "To"\nï "Due to the fact that" ? "Because"\nï "At this point in time" ? "Now"\nï "It is important to note that" ? delete entirely\nï "Very unique" ? "Unique"\n\nGood writing is mostly good deleting. If a word does no work, cut it.' },
-      { title: 'Active vs passive voice ó when each is right',
+        content: '‚Ä¢ "In order to" ? "To"\n‚Ä¢ "Due to the fact that" ? "Because"\n‚Ä¢ "At this point in time" ? "Now"\n‚Ä¢ "It is important to note that" ? delete entirely\n‚Ä¢ "Very unique" ? "Unique"\n\nGood writing is mostly good deleting. If a word does no work, cut it.' },
+      { title: 'Active vs passive voice ‚Äî when each is right',
         content: 'ACTIVE: "The student solved the problem." Subject acts. Clearer, shorter, stronger.\n\nPASSIVE: "The problem was solved." Subject is acted upon. Useful when the doer is unknown, obvious, or unimportant.\n\nDefault to active. Use passive deliberately in scientific writing where the method matters more than the person.' }
     ]
   }
 ];
 
 /* =========================================================
-   AUTO-VIDEO LIBRARY ó keyword matching
+   AUTO-VIDEO LIBRARY ‚Äî keyword matching
    ========================================================= */
 const KEYWORD_VIDEO_LIBRARY = [
   {
     keywords: ['algebra', 'matrices', 'matrix', 'determinant', 'vector space', 'eigen', 'linear equation'],
     videos: [
-      { title: 'Essence of linear algebra ó chapter 1: Vectors', channel: '3Blue1Brown', yt: 'fNk_zzaMoSs', duration: '9:52' },
+      { title: 'Essence of linear algebra ‚Äî chapter 1: Vectors', channel: '3Blue1Brown', yt: 'fNk_zzaMoSs', duration: '9:52' },
       { title: 'Linear transformations and matrices', channel: '3Blue1Brown', yt: 'k7RM-ot2NWY', duration: '10:58' },
       { title: 'Matrix multiplication as composition', channel: '3Blue1Brown', yt: 'XkY2DOUCWMU', duration: '10:03' },
-      { title: 'Eigenvectors and eigenvalues ó a visual intro', channel: '3Blue1Brown', yt: 'PFDu9oVAE-g', duration: '17:15' }
+      { title: 'Eigenvectors and eigenvalues ‚Äî a visual intro', channel: '3Blue1Brown', yt: 'PFDu9oVAE-g', duration: '17:15' }
     ]
   },
   {
     keywords: ['trigonometry', 'trig', 'sine', 'cosine', 'tangent', 'triangle', 'geometry'],
     videos: [
-      { title: 'Trigonometry basics ó Khan Academy', channel: 'Khan Academy', yt: 'F21S9Wpi0y8', duration: '9:16' },
-      { title: 'The unit circle ó explained visually', channel: 'Khan Academy', yt: '1m9p9i-jrYc', duration: '8:21' },
-      { title: 'Sine and cosine ó the graphs behind them', channel: 'Khan Academy', yt: 'zFmMOcaBrmk', duration: '11:05' }
+      { title: 'Trigonometry basics ‚Äî Khan Academy', channel: 'Khan Academy', yt: 'F21S9Wpi0y8', duration: '9:16' },
+      { title: 'The unit circle ‚Äî explained visually', channel: 'Khan Academy', yt: '1m9p9i-jrYc', duration: '8:21' },
+      { title: 'Sine and cosine ‚Äî the graphs behind them', channel: 'Khan Academy', yt: 'zFmMOcaBrmk', duration: '11:05' }
     ]
   },
   {
     keywords: ['statistics', 'stats', 'data analysis', 'hypothesis', 'regression'],
     videos: [
-      { title: 'Crash Course Statistics ó what is statistics?', channel: 'Crash Course', yt: 'sxQaBpKfDRk', duration: '12:16' },
-      { title: 'Bayes theorem ó the geometry of uncertainty', channel: '3Blue1Brown', yt: 'HZGCoVF3YvM', duration: '15:11' },
-      { title: 'Standard deviation ó explained clearly', channel: 'Khan Academy', yt: 'sQzW3Pz3sXw', duration: '9:33' }
+      { title: 'Crash Course Statistics ‚Äî what is statistics?', channel: 'Crash Course', yt: 'sxQaBpKfDRk', duration: '12:16' },
+      { title: 'Bayes theorem ‚Äî the geometry of uncertainty', channel: '3Blue1Brown', yt: 'HZGCoVF3YvM', duration: '15:11' },
+      { title: 'Standard deviation ‚Äî explained clearly', channel: 'Khan Academy', yt: 'sQzW3Pz3sXw', duration: '9:33' }
     ]
   },
   {
     keywords: ['mechanic', 'kinematic', 'newton', 'force', 'motion', 'gravity', 'projectile'],
     videos: [
-      { title: 'Crash Course Physics #1 ó motion in a straight line', channel: 'Crash Course', yt: 'ZM8ECpBuQYE', duration: '10:38' },
-      { title: "Newton's laws of motion ó Crash Course", channel: 'Crash Course', yt: 'kKKM8Y-u7ds', duration: '11:04' },
-      { title: 'Projectile motion ó the classic problem', channel: 'Khan Academy', yt: 'z24F5gG-5oE', duration: '12:28' }
+      { title: 'Crash Course Physics #1 ‚Äî motion in a straight line', channel: 'Crash Course', yt: 'ZM8ECpBuQYE', duration: '10:38' },
+      { title: "Newton's laws of motion ‚Äî Crash Course", channel: 'Crash Course', yt: 'kKKM8Y-u7ds', duration: '11:04' },
+      { title: 'Projectile motion ‚Äî the classic problem', channel: 'Khan Academy', yt: 'z24F5gG-5oE', duration: '12:28' }
     ]
   },
   {
     keywords: ['optics', 'light', 'lens', 'mirror', 'refraction', 'reflection'],
     videos: [
-      { title: 'Refraction and Snell\'s law ó Crash Course', channel: 'Crash Course', yt: 'FUr0eHhXK9U', duration: '10:56' },
-      { title: 'Lenses and mirrors ó the ray diagrams', channel: 'Khan Academy', yt: '1g4yHk1Tm3g', duration: '13:41' },
-      { title: 'Total internal reflection ó fibre optics', channel: 'Khan Academy', yt: 'B3iBmZ0Mh1Y', duration: '8:47' }
+      { title: 'Refraction and Snell\'s law ‚Äî Crash Course', channel: 'Crash Course', yt: 'FUr0eHhXK9U', duration: '10:56' },
+      { title: 'Lenses and mirrors ‚Äî the ray diagrams', channel: 'Khan Academy', yt: '1g4yHk1Tm3g', duration: '13:41' },
+      { title: 'Total internal reflection ‚Äî fibre optics', channel: 'Khan Academy', yt: 'B3iBmZ0Mh1Y', duration: '8:47' }
     ]
   },
   {
     keywords: ['electric', 'current', 'voltage', 'circuit', 'resistance', 'ohm', 'magnet'],
     videos: [
-      { title: 'Electric current ó Crash Course Physics', channel: 'Crash Course', yt: 'mwxkeXrC4wU', duration: '11:02' },
+      { title: 'Electric current ‚Äî Crash Course Physics', channel: 'Crash Course', yt: 'mwxkeXrC4wU', duration: '11:02' },
       { title: "Ohm's law and resistance explained", channel: 'Khan Academy', yt: 'HsLLq6Rm5tU', duration: '11:03' },
-      { title: 'Series and parallel circuits ó Crash Course', channel: 'Crash Course', yt: 'gQ2GV8nNnGg', duration: '10:43' }
+      { title: 'Series and parallel circuits ‚Äî Crash Course', channel: 'Crash Course', yt: 'gQ2GV8nNnGg', duration: '10:43' }
     ]
   },
   {
     keywords: ['java ', 'java,', 'oop', 'oops', 'object oriented', 'inheritance', 'polymorphism'],
     videos: [
-      { title: 'Object-oriented programming ó Crash Course CS', channel: 'Crash Course', yt: 'fJWK3wd9u5E', duration: '10:47' },
+      { title: 'Object-oriented programming ‚Äî Crash Course CS', channel: 'Crash Course', yt: 'fJWK3wd9u5E', duration: '10:47' },
       { title: 'Java full course for beginners', channel: 'Programming with Mosh', yt: 'eIrMbAQSU34', duration: '2:30:48' },
       { title: 'OOP concepts explained with real examples', channel: 'Programming with Mosh', yt: 'pTB0EiLXUC8', duration: '8:14' }
     ]
@@ -1420,14 +1420,14 @@ const KEYWORD_VIDEO_LIBRARY = [
     keywords: ['python', 'pandas', 'numpy', 'django', 'flask'],
     videos: [
       { title: 'Python full course for beginners', channel: 'Programming with Mosh', yt: '_uQrJ0TkZlc', duration: '6:14:07' },
-      { title: 'Python for beginners ó full course', channel: 'freeCodeCamp', yt: 'rfscVS0vtbw', duration: '4:26:52' },
-      { title: 'NumPy explained ó the basics', channel: 'freeCodeCamp', yt: 'GB9ByFAIAH4', duration: '58:10' }
+      { title: 'Python for beginners ‚Äî full course', channel: 'freeCodeCamp', yt: 'rfscVS0vtbw', duration: '4:26:52' },
+      { title: 'NumPy explained ‚Äî the basics', channel: 'freeCodeCamp', yt: 'GB9ByFAIAH4', duration: '58:10' }
     ]
   },
   {
     keywords: [' c ', 'c++', 'cpp', 'pointer', 'malloc', 'memory management'],
     videos: [
-      { title: 'Pointers in C ó Computerphile', channel: 'Computerphile', yt: 'Rxvvq9p4i0s', duration: '8:03' },
+      { title: 'Pointers in C ‚Äî Computerphile', channel: 'Computerphile', yt: 'Rxvvq9p4i0s', duration: '8:03' },
       { title: 'C programming full course', channel: 'freeCodeCamp', yt: 'KJgsSFOSQv0', duration: '3:46:13' },
       { title: 'C++ tutorial for beginners', channel: 'Programming with Mosh', yt: 'vLnPwxZdW4Y', duration: '1:12:16' }
     ]
@@ -1445,45 +1445,45 @@ const KEYWORD_VIDEO_LIBRARY = [
     videos: [
       { title: 'But what is a neural network?', channel: '3Blue1Brown', yt: 'aircAruvnKk', duration: '19:13' },
       { title: 'Machine learning for beginners', channel: 'freeCodeCamp', yt: 'NWONeJKn6kc', duration: '1:17:10' },
-      { title: 'Gradient descent ó how neural nets learn', channel: '3Blue1Brown', yt: 'IHZwWFHWa-w', duration: '21:01' }
+      { title: 'Gradient descent ‚Äî how neural nets learn', channel: '3Blue1Brown', yt: 'IHZwWFHWa-w', duration: '21:01' }
     ]
   },
   {
     keywords: ['operating system', 'process', 'thread', 'scheduling', 'deadlock'],
     videos: [
-      { title: 'Operating systems ó Crash Course CS', channel: 'Crash Course', yt: '26QPDBe-NB8', duration: '13:36' },
-      { title: 'Processes and threads ó the difference', channel: 'Computerphile', yt: '4rLW7zg21gI', duration: '7:38' },
+      { title: 'Operating systems ‚Äî Crash Course CS', channel: 'Crash Course', yt: '26QPDBe-NB8', duration: '13:36' },
+      { title: 'Processes and threads ‚Äî the difference', channel: 'Computerphile', yt: '4rLW7zg21gI', duration: '7:38' },
       { title: 'Deadlock in operating systems', channel: 'Neso Academy', yt: 'on6aJ0W8Rzs', duration: '11:45' }
     ]
   },
   {
     keywords: ['database', 'dbms', 'sql', 'normalisation', 'normalization', 'index', 'relational'],
     videos: [
-      { title: 'Database design ó Crash Course CS', channel: 'Crash Course', yt: '2lDKlJPXeLo', duration: '11:58' },
-      { title: 'SQL tutorial ó full database course', channel: 'freeCodeCamp', yt: 'HXV3zeQKqGY', duration: '4:20:39' },
+      { title: 'Database design ‚Äî Crash Course CS', channel: 'Crash Course', yt: '2lDKlJPXeLo', duration: '11:58' },
+      { title: 'SQL tutorial ‚Äî full database course', channel: 'freeCodeCamp', yt: 'HXV3zeQKqGY', duration: '4:20:39' },
       { title: 'Database normalisation explained', channel: 'Neso Academy', yt: 'aSbY3hq1BcU', duration: '12:06' }
     ]
   },
   {
     keywords: ['thermodynamic', 'entropy', 'enthalpy', 'heat', 'carnot'],
     videos: [
-      { title: 'Thermodynamics ó Crash Course Physics', channel: 'Crash Course', yt: '8kB81BEwO_s', duration: '11:19' },
+      { title: 'Thermodynamics ‚Äî Crash Course Physics', channel: 'Crash Course', yt: '8kB81BEwO_s', duration: '11:19' },
       { title: 'The second law of thermodynamics', channel: 'Crash Course', yt: 'mn6v0-GgS7o', duration: '11:21' },
-      { title: 'Entropy ó the most misunderstood concept', channel: 'Veritasium', yt: 'ZDFOdzsGq5Y', duration: '11:38' }
+      { title: 'Entropy ‚Äî the most misunderstood concept', channel: 'Veritasium', yt: 'ZDFOdzsGq5Y', duration: '11:38' }
     ]
   },
   {
     keywords: ['organic', 'chemistry', 'reaction', 'mole', 'bond', 'alkane', 'functional group'],
     videos: [
-      { title: 'Crash Course Chemistry ó the nucleus', channel: 'Crash Course', yt: 'FSyAehMdpyI', duration: '11:38' },
-      { title: 'Organic chemistry ó functional groups', channel: 'Crash Course', yt: 'ybT4dYpY0Y8', duration: '11:11' },
+      { title: 'Crash Course Chemistry ‚Äî the nucleus', channel: 'Crash Course', yt: 'FSyAehMdpyI', duration: '11:38' },
+      { title: 'Organic chemistry ‚Äî functional groups', channel: 'Crash Course', yt: 'ybT4dYpY0Y8', duration: '11:11' },
       { title: 'SN1 and SN2 reactions explained', channel: 'Khan Academy', yt: 'Ll3J7p8gWqA', duration: '12:42' }
     ]
   },
   {
     keywords: ['accounting', 'account', 'finance', 'balance sheet', 'debit', 'credit', 'ledger'],
     videos: [
-      { title: 'Accounting basics ó debits and credits', channel: 'Accounting Stuff', yt: 'VhwZ9t2b3Zk', duration: '10:45' },
+      { title: 'Accounting basics ‚Äî debits and credits', channel: 'Accounting Stuff', yt: 'VhwZ9t2b3Zk', duration: '10:45' },
       { title: 'The balance sheet explained', channel: 'Accounting Stuff', yt: 'VhwZ9t2b3Zk', duration: '9:12' },
       { title: 'Reading financial statements', channel: 'Khan Academy', yt: 'v7HkGqZ4C1E', duration: '12:30' }
     ]
@@ -1491,7 +1491,7 @@ const KEYWORD_VIDEO_LIBRARY = [
   {
     keywords: ['writing', 'essay', 'english', 'grammar', 'composition', 'language'],
     videos: [
-      { title: 'How to write a good essay ó the basics', channel: 'Khan Academy', yt: 'liBmM0wZ4qY', duration: '6:22' },
+      { title: 'How to write a good essay ‚Äî the basics', channel: 'Khan Academy', yt: 'liBmM0wZ4qY', duration: '6:22' },
       { title: 'Active vs passive voice', channel: 'Khan Academy', yt: 'o6Z0jZ7hx3Y', duration: '5:14' },
       { title: 'Grammar rules you actually need', channel: 'Khan Academy', yt: 'z1sD0rX7dUY', duration: '7:31' }
     ]
@@ -1619,8 +1619,8 @@ function genericNotes(topic) {
   const n = topic.name;
   return [
     {
-      title: `${n} ó a 20-minute study routine`,
-      content: `1. Spend 3 minutes recalling what you already know about ${n} without notes.\n2. Read one section slowly and write a 3-line summary in your own words.\n3. Do 2 practice problems immediately ó not later.\n4. Close everything and explain ${n} out loud as if teaching a friend.\n5. Note the one part that still feels fuzzy; start there tomorrow.\n\nActive recall + immediate practice beats re-reading every time.`
+      title: `${n} ‚Äî a 20-minute study routine`,
+      content: `1. Spend 3 minutes recalling what you already know about ${n} without notes.\n2. Read one section slowly and write a 3-line summary in your own words.\n3. Do 2 practice problems immediately ‚Äî not later.\n4. Close everything and explain ${n} out loud as if teaching a friend.\n5. Note the one part that still feels fuzzy; start there tomorrow.\n\nActive recall + immediate practice beats re-reading every time.`
     },
     {
       title: `Breaking ${n} into smaller pieces`,
@@ -1628,7 +1628,7 @@ function genericNotes(topic) {
     },
     {
       title: `Common mistakes in ${n}`,
-      content: `ï Memorising steps without understanding why they work.\nï Skipping practice until "after I finish reading".\nï Studying alone when a 10-minute peer explanation would do.\nï Not writing down the exact point where you got stuck.\n\nTry teaching ${n} to someone today ó you will find the gaps in under 5 minutes.`
+      content: `‚Ä¢ Memorising steps without understanding why they work.\n‚Ä¢ Skipping practice until "after I finish reading".\n‚Ä¢ Studying alone when a 10-minute peer explanation would do.\n‚Ä¢ Not writing down the exact point where you got stuck.\n\nTry teaching ${n} to someone today ‚Äî you will find the gaps in under 5 minutes.`
     }
   ];
 }
@@ -1681,7 +1681,7 @@ function notesFor(topic) {
 function genericVideos(topic) {
   const n = topic.name;
   return [
-    { title: `${n} ó a quick visual introduction`, channel: 'Khan Academy', yt: 'fNk_zzaMoSs', duration: '9:52' },
+    { title: `${n} ‚Äî a quick visual introduction`, channel: 'Khan Academy', yt: 'fNk_zzaMoSs', duration: '9:52' },
     { title: `Study smarter: how to learn ${n} faster`, channel: 'Crash Course', yt: 'zouPoc49xbk', duration: '12:16' },
     { title: `Explaining ${n} with real-world examples`, channel: '3Blue1Brown', yt: 'WUvTyaaNkzM', duration: '17:04' }
   ];
@@ -1757,7 +1757,7 @@ function computeMatches() {
 }
 
 /* =========================================================
-   7. RENDER ó TOPICS
+   7. RENDER ‚Äî TOPICS
    ========================================================= */
 function renderTopics() {
   const list = $('topicList');
@@ -1814,7 +1814,7 @@ function renderTopics() {
       const rm = document.createElement('button');
       rm.type = 'button';
       rm.className = 'remove-topic';
-      rm.textContent = '◊';
+      rm.textContent = '√ó';
       rm.title = 'Remove topic';
       rm.setAttribute('aria-label', 'Remove topic');
       rm.addEventListener('click', () => {
@@ -1837,7 +1837,7 @@ function renderTopics() {
 }
 
 /* =========================================================
-   8. RENDER ó MATCHES
+   8. RENDER ‚Äî MATCHES
    ========================================================= */
 function renderMatches() {
   const wrap = $('matchList');
@@ -1859,7 +1859,7 @@ function renderMatches() {
   if (!results.length) {
     const e = document.createElement('div');
     e.className = 'empty';
-    e.innerHTML = 'No strong matches yet.<br>Try marking a few topics as <strong>1ñ2</strong> (need help) or <strong>4ñ5</strong> (can teach).';
+    e.innerHTML = 'No strong matches yet.<br>Try marking a few topics as <strong>1‚Äì2</strong> (need help) or <strong>4‚Äì5</strong> (can teach).';
     wrap.appendChild(e);
     return;
   }
@@ -1964,7 +1964,7 @@ function renderMatches() {
 }
 
 /* =========================================================
-   9. RENDER ó NOTES
+   9. RENDER ‚Äî NOTES
    ========================================================= */
 function renderNotesTopics() {
   const wrap = $('notesTopics');
@@ -2015,7 +2015,7 @@ function renderNotes() {
   list.innerHTML = '';
 
   if (!topic) {
-    $('notesTopicName').textContent = 'ó';
+    $('notesTopicName').textContent = '‚Äî';
     $('notesCount').textContent = '';
     $('autoBadge').hidden = true;
     const e = document.createElement('div');
@@ -2081,7 +2081,7 @@ function noteCard(n) {
     const del = document.createElement('button');
     del.type = 'button';
     del.className = 'note-del';
-    del.textContent = '◊';
+    del.textContent = '√ó';
     del.title = 'Delete note';
     del.setAttribute('aria-label', 'Delete note');
     del.addEventListener('click', () => {
@@ -2128,7 +2128,7 @@ function openNoteForm() {
   form.id = 'noteForm';
   form.innerHTML =
     '<input id="noteTitleInput" type="text" maxlength="80" placeholder="Note title (e.g. Bayes\' theorem in plain words)" autocomplete="off">' +
-    '<textarea id="noteBodyInput" maxlength="1500" placeholder="Write your explanation, steps, or a worked exampleÖ"></textarea>' +
+    '<textarea id="noteBodyInput" maxlength="1500" placeholder="Write your explanation, steps, or a worked example‚Ä¶"></textarea>' +
     '<div class="note-form-actions">' +
       '<button class="btn" id="noteSaveBtn" type="button">Post note</button>' +
       '<button class="btn ghost" id="noteCancelBtn" type="button">Cancel</button>' +
@@ -2158,14 +2158,14 @@ function openNoteForm() {
     closeNoteForm();
     renderNotesTopics();
     renderNotes();
-    toast('Note posted ó thanks for helping others');
+    toast('Note posted ‚Äî thanks for helping others');
   });
 
   $('noteTitleInput').focus();
 }
 
 /* =========================================================
-   10. RENDER ó VIDEOS
+   10. RENDER ‚Äî VIDEOS
    ========================================================= */
 function renderVideoTopics() {
   const wrap = $('videoTopics');
@@ -2217,7 +2217,7 @@ function renderVideos() {
   list.innerHTML = '';
 
   if (!topic) {
-    $('videoTopicName').textContent = 'ó';
+    $('videoTopicName').textContent = '‚Äî';
     $('videoCount').textContent = '';
     $('videoAutoBadge').hidden = true;
     const e = document.createElement('div');
@@ -2305,7 +2305,7 @@ function videoCard(v) {
     const del = document.createElement('button');
     del.type = 'button';
     del.className = 'video-del';
-    del.textContent = '◊';
+    del.textContent = '√ó';
     del.title = 'Remove video';
     del.setAttribute('aria-label', 'Remove video');
     del.addEventListener('click', (e) => {
@@ -2359,7 +2359,7 @@ function youtubeSearchCard(topicName) {
   a.innerHTML =
     '<div class="yt-big">?</div>' +
     '<h4>Watch more on YouTube</h4>' +
-    '<p>Search ì' + escapeHtml(topicName) + 'î and explore more explanations.</p>';
+    '<p>Search ‚Äú' + escapeHtml(topicName) + '‚Äù and explore more explanations.</p>';
 
   return a;
 }
@@ -2384,7 +2384,7 @@ function openVideoForm() {
   form.className = 'note-form';
   form.id = 'videoForm';
   form.innerHTML =
-    '<input id="videoTitleInput" type="text" maxlength="80" placeholder="Video title (e.g. Bayes theorem ó a visual intro)" autocomplete="off">' +
+    '<input id="videoTitleInput" type="text" maxlength="80" placeholder="Video title (e.g. Bayes theorem ‚Äî a visual intro)" autocomplete="off">' +
     '<input id="videoChannelInput" type="text" maxlength="40" placeholder="Channel name (optional, e.g. 3Blue1Brown)" autocomplete="off">' +
     '<input id="videoUrlInput" type="url" placeholder="Paste YouTube link or 11-character video ID" autocomplete="off" style="margin-bottom:8px">' +
     '<div class="note-form-actions">' +
@@ -2427,14 +2427,14 @@ function openVideoForm() {
     closeVideoForm();
     renderVideoTopics();
     renderVideos();
-    toast('Video added ó thanks for sharing');
+    toast('Video added ‚Äî thanks for sharing');
   });
 
   $('videoTitleInput').focus();
 }
 
 /* =========================================================
-   11. RENDER ó PROFILE CHIP + VIEW
+   11. RENDER ‚Äî PROFILE CHIP + VIEW
    ========================================================= */
 function renderChip() {
   const btn = $('profileChip');
@@ -2455,7 +2455,7 @@ function renderChip() {
     ? '<span class="chip-avatar emoji">' + escapeHtml(p.avatar) + '</span>'
     : '<span class="chip-avatar">' + escapeHtml(initialsOf(p.name)) + '</span>';
 
-  const sub = [p.course, p.year].filter(Boolean).join(' ∑ ') || 'View your profile';
+  const sub = [p.course, p.year].filter(Boolean).join(' ¬∑ ') || 'View your profile';
 
   btn.innerHTML =
     av +
@@ -2490,8 +2490,8 @@ function renderProfileView() {
     ? '<div class="pv-avatar emoji">' + escapeHtml(p.avatar) + '</div>'
     : '<div class="pv-avatar">' + escapeHtml(initialsOf(p.name)) + '</div>';
 
-  const meta = [p.course, p.year].filter(Boolean).join(' ∑ ') || 'Student';
-  const bio = p.bio ? '<div class="pv-bio">ì' + escapeHtml(p.bio) + 'î</div>' : '';
+  const meta = [p.course, p.year].filter(Boolean).join(' ¬∑ ') || 'Student';
+  const bio = p.bio ? '<div class="pv-bio">‚Äú' + escapeHtml(p.bio) + '‚Äù</div>' : '';
 
   const chipFor = (t, cls) => {
     const tag = DEFAULT_IDS.has(t.id) ? '' : '<span class="pv-custom-tag">custom</span>';
@@ -2500,11 +2500,11 @@ function renderProfileView() {
 
   const teachHtml = teach.length
     ? '<div class="pv-chip-wrap">' + teach.map(t => chipFor(t, 'give')).join('') + '</div>'
-    : '<div class="pv-empty-note">Mark a topic 4ñ5 to show what you can teach.</div>';
+    : '<div class="pv-empty-note">Mark a topic 4‚Äì5 to show what you can teach.</div>';
 
   const learnHtml = learn.length
     ? '<div class="pv-chip-wrap">' + learn.map(t => chipFor(t, 'get')).join('') + '</div>'
-    : '<div class="pv-empty-note">Mark a topic 1ñ2 to show where you need help.</div>';
+    : '<div class="pv-empty-note">Mark a topic 1‚Äì2 to show where you need help.</div>';
 
   const styleHtml = (p.styles && p.styles.length)
     ? '<div class="pv-mini-chips">' + p.styles.map(s => '<span class="pv-mini-chip">' + escapeHtml(s) + '</span>').join('') + '</div>'
