@@ -1,0 +1,2834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Track You Revival — Don't just learn from a screen. Learn with someone.</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: #f5f6fa;
+    color: #14161f;
+    -webkit-font-smoothing: antialiased;
+  }
+  body.locked { overflow: hidden; }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 40;
+    background: #fff;
+    border-bottom: 1px solid #e8eaf1;
+    box-shadow: 0 1px 3px rgba(20,22,31,0.04);
+  }
+  .topbar-inner {
+    max-width: 1120px; margin: 0 auto;
+    padding: 10px 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .profile-chip {
+    display: flex; align-items: center; gap: 10px;
+    padding: 5px 14px 5px 5px;
+    border-radius: 100px;
+    border: 1px solid #e2e4ee;
+    background: #fff;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    transition: border-color .15s, background .15s, transform .1s;
+    max-width: 260px;
+  }
+  .profile-chip:hover { border-color: #c7d2fe; background: #f7f8ff; }
+  .profile-chip:active { transform: scale(.98); }
+  .chip-avatar {
+    width: 36px; height: 36px; flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: #fff;
+    display: grid; place-items: center;
+    font-size: 12.5px; font-weight: 700; letter-spacing: .3px;
+  }
+  .chip-avatar.emoji { font-size: 18px; }
+  .chip-avatar.empty { background: #eef0f6; color: #9096a8; font-size: 16px; }
+  .chip-text { min-width: 0; flex: 1; }
+  .chip-name {
+    font-size: 13px; font-weight: 700; letter-spacing: -.2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    line-height: 1.2;
+  }
+  .chip-sub {
+    font-size: 11px; color: #9096a8;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    margin-top: 1px;
+  }
+  .chip-sub.cta { color: #4f46e5; font-weight: 600; }
+  .chip-pencil { flex-shrink: 0; font-size: 12px; opacity: .45; transition: opacity .15s; }
+  .profile-chip:hover .chip-pencil { opacity: 1; }
+  .topbar-brand {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 15px; font-weight: 800; letter-spacing: -.3px;
+  }
+  .brand-mark {
+    width: 26px; height: 26px; border-radius: 8px;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: #fff; display: grid; place-items: center;
+    font-size: 14px; font-weight: 700;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: #fff;
+    padding: 30px 24px 34px;
+  }
+  .hero-inner { max-width: 1120px; margin: 0 auto; }
+  .hero h1 {
+    margin: 0 0 8px;
+    font-size: clamp(22px, 3.2vw, 32px);
+    letter-spacing: -.6px; line-height: 1.2;
+  }
+  .hero p {
+    margin: 0; opacity: .88;
+    font-size: 14.5px; max-width: 660px; line-height: 1.55;
+  }
+
+  main {
+    max-width: 1120px;
+    margin: -18px auto 22px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 920px) { main { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: #fff;
+    border: 1px solid #e8eaf1;
+    border-radius: 18px;
+    box-shadow: 0 4px 20px rgba(20,22,31,0.05);
+    overflow: hidden;
+  }
+  .panel-head { padding: 18px 20px 14px; border-bottom: 1px solid #f0f1f6; }
+  .panel-head h2 { margin: 0 0 4px; font-size: 15px; font-weight: 700; letter-spacing: -.2px; }
+  .panel-head p { margin: 0; font-size: 12.5px; color: #7a8093; line-height: 1.45; }
+  .head-row { display: flex; align-items: flex-start; gap: 12px; }
+  .head-row > div:first-child { flex: 1; min-width: 0; }
+
+  .add-topic-btn {
+    font-family: inherit;
+    font-size: 12px; font-weight: 700;
+    padding: 7px 12px; border-radius: 9px;
+    border: 1px solid #c7d2fe; background: #eef2ff; color: #4338ca;
+    cursor: pointer; white-space: nowrap; flex-shrink: 0;
+    transition: background .12s, border-color .12s, transform .1s;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .add-topic-btn:hover { background: #e0e7ff; border-color: #a5b4fc; }
+  .add-topic-btn:active { transform: scale(.96); }
+
+  .add-form {
+    padding: 14px 20px;
+    background: #f7f8ff;
+    border-bottom: 1px solid #e8eaf1;
+    animation: slideDown .2s ease;
+  }
+  .add-form[hidden] { display: none; }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-6px); } }
+  .add-form .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media (max-width: 420px) { .add-form .grid2 { grid-template-columns: 1fr; } }
+  .add-form input {
+    width: 100%; font-family: inherit; font-size: 13px;
+    padding: 9px 11px; border-radius: 9px;
+    border: 1px solid #dcdff0; background: #fff; color: #14161f;
+    outline: none; transition: border-color .15s, box-shadow .15s;
+  }
+  .add-form input:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+  }
+  .add-form input::placeholder { color: #b3b8c8; }
+  .add-form-actions { display: flex; gap: 8px; margin-top: 10px; }
+  .add-form-actions .btn { padding: 7px 14px; font-size: 12px; }
+
+  .topic-list { padding: 6px 8px 12px; }
+  .topic-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 9px 12px; border-radius: 11px;
+    transition: background .12s;
+    position: relative;
+  }
+  .topic-row:hover { background: #fafbff; }
+  .topic-row.custom { background: #fbfbff; }
+  .topic-row.custom:hover { background: #f3f4ff; }
+  .topic-name { font-size: 13.5px; font-weight: 600; letter-spacing: -.1px; }
+  .topic-subject { font-size: 11px; color: #9096a8; margin-top: 1px; }
+  .custom-tag {
+    display: inline-block;
+    font-size: 9px; font-weight: 800;
+    letter-spacing: .6px; text-transform: uppercase;
+    color: #7c3aed; background: #f3e8ff;
+    padding: 1px 6px; border-radius: 5px;
+    margin-left: 6px; vertical-align: middle;
+  }
+  .pips-wrap { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .pips { display: flex; gap: 4px; }
+  .pip {
+    width: 23px; height: 23px; border-radius: 7px;
+    border: 1px solid #e2e4ee; background: #fff; color: #a8adbd;
+    font-size: 10px; font-weight: 600; cursor: pointer; padding: 0;
+    display: grid; place-items: center; font-family: inherit;
+    transition: transform .1s, border-color .12s, background .12s;
+  }
+  .pip:hover { border-color: #4f46e5; color: #4f46e5; }
+  .pip:active { transform: scale(.9); }
+  .pip.on { color: #fff; border-color: transparent; }
+  .pip.on.lv-weak   { background: #f59e0b; }
+  .pip.on.lv-mid    { background: #94a3b8; }
+  .pip.on.lv-strong { background: #10b981; }
+
+  .remove-topic {
+    width: 22px; height: 22px; flex-shrink: 0;
+    border-radius: 6px; border: none;
+    background: transparent; color: #b3b8c8;
+    font-size: 15px; line-height: 1;
+    cursor: pointer; padding: 0;
+    display: grid; place-items: center;
+    transition: background .12s, color .12s;
+    font-family: inherit;
+  }
+  .remove-topic:hover { background: #fee2e2; color: #dc2626; }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    padding: 12px 20px 16px; border-top: 1px solid #f0f1f6;
+    font-size: 11.5px; color: #7a8093;
+  }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .dot { width: 9px; height: 9px; border-radius: 3px; display: inline-block; }
+
+  .match-list { padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+  .match {
+    display: flex; gap: 14px; padding: 16px;
+    border: 1px solid #eceef5; border-radius: 15px; background: #fff;
+    transition: border-color .15s, box-shadow .15s, transform .15s;
+  }
+  .match:hover {
+    border-color: #d6d9e8;
+    box-shadow: 0 6px 18px rgba(79,70,229,0.08);
+    transform: translateY(-1px);
+  }
+  .avatar {
+    width: 46px; height: 46px; flex-shrink: 0; border-radius: 50%;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: #fff; display: grid; place-items: center;
+    font-size: 14px; font-weight: 700; letter-spacing: .3px;
+  }
+  .match-body { flex: 1; min-width: 0; }
+  .match-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 12px; margin-bottom: 10px;
+  }
+  .match-name { font-size: 15px; font-weight: 700; letter-spacing: -.2px; }
+  .match-meta { font-size: 12px; color: #8b90a3; margin-top: 2px; }
+  .match-score { text-align: right; flex-shrink: 0; }
+  .pct {
+    display: block; font-size: 17px; font-weight: 800; line-height: 1.1;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .pct-label { font-size: 10px; text-transform: uppercase; letter-spacing: .7px; color: #a0a5b7; }
+  .bar { height: 5px; border-radius: 99px; background: #eef0f6; overflow: hidden; margin-bottom: 12px; }
+  .bar > i {
+    display: block; height: 100%; border-radius: 99px;
+    background: linear-gradient(90deg, #4f46e5, #7c3aed);
+    transition: width .35s ease;
+  }
+  .row { margin-bottom: 8px; }
+  .row-label {
+    display: block; font-size: 10.5px; text-transform: uppercase;
+    letter-spacing: .7px; color: #a0a5b7; font-weight: 700; margin-bottom: 5px;
+  }
+  .chip {
+    display: inline-block; padding: 3px 10px; border-radius: 20px;
+    font-size: 12px; font-weight: 600; margin: 0 5px 5px 0;
+  }
+  .chip.get  { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+  .chip.give { background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; }
+  .match-foot {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; margin-top: 12px; flex-wrap: wrap;
+  }
+  .badge {
+    font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: 8px;
+    background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0;
+  }
+  .badge-alt { background: #fffbeb; color: #b45309; border-color: #fde68a; }
+
+  .empty {
+    padding: 46px 24px; text-align: center;
+    color: #8b90a3; font-size: 13.5px; line-height: 1.6;
+  }
+
+  /* ============ STUDY NOTES ============ */
+  .notes-wrap {
+    max-width: 1120px;
+    margin: 0 auto 60px;
+    padding: 0 24px;
+  }
+  .notes-topics {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding: 14px 20px;
+    border-bottom: 1px solid #f0f1f6;
+    background: #fbfbfe;
+  }
+  .notes-topic-chip {
+    font-family: inherit;
+    font-size: 12.5px; font-weight: 600;
+    padding: 7px 14px; border-radius: 20px;
+    border: 1px solid #e2e4ee; background: #fff; color: #5a6072;
+    cursor: pointer; transition: all .12s;
+    display: inline-flex; align-items: center; gap: 6px;
+    white-space: nowrap;
+  }
+  .notes-topic-chip:hover {
+    border-color: #c7d2fe; color: #4338ca; background: #f5f6ff;
+  }
+  .notes-topic-chip.active {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: #fff; border-color: transparent;
+    box-shadow: 0 2px 8px rgba(79,70,229,0.28);
+  }
+  .notes-topic-chip .count-badge {
+    font-size: 10.5px; font-weight: 700;
+    padding: 1px 6px; border-radius: 20px;
+    background: #eef2ff; color: #4338ca;
+    min-width: 20px; text-align: center;
+  }
+  .notes-topic-chip.active .count-badge {
+    background: rgba(255,255,255,0.25); color: #fff;
+  }
+  .notes-topic-chip .custom-dot {
+    font-size: 7px; color: #a78bfa; line-height: 1;
+  }
+  .notes-topic-chip.active .custom-dot { color: rgba(255,255,255,0.85); }
+  .notes-body { padding: 18px 20px 22px; }
+  .notes-header {
+    display: flex; align-items: baseline; gap: 10px;
+    margin-bottom: 14px; padding-bottom: 12px;
+    border-bottom: 1px dashed #eceef5;
+    flex-wrap: wrap;
+  }
+  .notes-header h3 {
+    margin: 0; font-size: 15px; font-weight: 800;
+    letter-spacing: -.3px;
+  }
+  .notes-count {
+    font-size: 11.5px; color: #a0a5b7;
+    font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+  }
+  .auto-provided {
+    font-size: 10px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: .5px;
+    background: #d1fae5; color: #059669;
+    padding: 3px 9px; border-radius: 20px;
+    display: inline-flex; align-items: center; gap: 4px;
+    margin-left: auto;
+  }
+  .auto-provided::before {
+    content: '?';
+    font-size: 10px;
+  }
+
+  .note-form {
+    border: 1px solid #c7d2fe;
+    background: linear-gradient(135deg, #fafbff 0%, #f4f5ff 100%);
+    border-radius: 14px;
+    padding: 14px 15px;
+    margin-bottom: 14px;
+    animation: slideDown .2s ease;
+  }
+  .note-form input,
+  .note-form textarea {
+    width: 100%; font-family: inherit; font-size: 13.5px;
+    padding: 9px 11px; border-radius: 9px;
+    border: 1px solid #dcdff0; background: #fff; color: #14161f;
+    outline: none;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .note-form input { margin-bottom: 8px; font-weight: 600; }
+  .note-form textarea {
+    resize: vertical; min-height: 84px; max-height: 240px; line-height: 1.55;
+  }
+  .note-form input:focus,
+  .note-form textarea:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+  }
+  .note-form input::placeholder,
+  .note-form textarea::placeholder { color: #b3b8c8; }
+  .note-form-actions { display: flex; gap: 8px; margin-top: 10px; }
+  .note-form-actions .btn { padding: 7px 14px; font-size: 12px; }
+
+  .note-card {
+    border: 1px solid #eceef5;
+    border-radius: 14px;
+    padding: 15px 17px;
+    margin-bottom: 10px;
+    background: #fff;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .note-card:hover {
+    border-color: #d6d9e8;
+    box-shadow: 0 4px 14px rgba(20,22,31,0.05);
+  }
+  .note-card.mine {
+    background: linear-gradient(135deg, #fafbff 0%, #f4f5ff 100%);
+    border-color: #c7d2fe;
+  }
+  .note-head {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px;
+  }
+  .note-avatar {
+    width: 30px; height: 30px; flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: #fff; display: grid; place-items: center;
+    font-size: 10px; font-weight: 700; letter-spacing: .2px;
+  }
+  .note-avatar.emoji { font-size: 15px; }
+  .note-author-wrap { min-width: 0; flex: 1; }
+  .note-author {
+    font-size: 12.5px; font-weight: 700;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .you-badge {
+    font-size: 9px; font-weight: 800; letter-spacing: .5px;
+    text-transform: uppercase;
+    background: #eef2ff; color: #4338ca;
+    border: 1px solid #c7d2fe;
+    padding: 1px 6px; border-radius: 5px;
+  }
+  .note-time {
+    font-size: 11px; color: #a8adbd;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .note-del {
+    width: 24px; height: 24px; flex-shrink: 0;
+    border-radius: 7px; border: none; background: transparent;
+    color: #c1c6d4; cursor: pointer; font-size: 15px; line-height: 1;
+    display: grid; place-items: center; padding: 0;
+    transition: background .12s, color .12s;
+    font-family: inherit;
+  }
+  .note-del:hover { background: #fee2e2; color: #dc2626; }
+  .note-title {
+    margin: 0 0 6px;
+    font-size: 14.5px; font-weight: 700;
+    letter-spacing: -.2px; line-height: 1.35;
+  }
+  .note-content {
+    font-size: 13px; line-height: 1.65;
+    color: #4a5062;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .notes-empty {
+    padding: 34px 20px 30px;
+    text-align: center;
+    color: #8b90a3;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  .notes-empty .big { font-size: 28px; margin-bottom: 8px; }
+
+  /* ============ STUDY VIDEOS ============ */
+  .videos-wrap {
+    max-width: 1120px;
+    margin: 0 auto 60px;
+    padding: 0 24px;
+  }
+  .videos-body { padding: 18px 20px 22px; }
+  .videos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 760px) { .videos-grid { grid-template-columns: 1fr; } }
+
+  .video-card {
+    border: 1px solid #eceef5;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: border-color .15s, box-shadow .15s, transform .15s;
+  }
+  .video-card:hover {
+    border-color: #d6d9e8;
+    box-shadow: 0 6px 18px rgba(20,22,31,0.07);
+    transform: translateY(-1px);
+  }
+  .video-card.mine {
+    background: linear-gradient(135deg, #fafbff 0%, #f4f5ff 100%);
+    border-color: #c7d2fe;
+  }
+  .video-thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #14161f;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .video-thumb img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform .25s ease;
+  }
+  .video-card:hover .video-thumb img { transform: scale(1.03); }
+  .video-play {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.35) 100%);
+  }
+  .video-play span {
+    width: 54px; height: 54px; border-radius: 50%;
+    background: rgba(20,22,31,0.72);
+    color: #fff; display: grid; place-items: center;
+    font-size: 17px; padding-left: 4px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+    transition: background .15s, transform .15s;
+  }
+  .video-thumb:hover .video-play span {
+    background: #4f46e5;
+    transform: scale(1.1);
+  }
+  .video-duration {
+    position: absolute; bottom: 8px; right: 8px;
+    background: rgba(20,22,31,0.85); color: #fff;
+    font-size: 11px; font-weight: 700;
+    padding: 3px 7px; border-radius: 5px;
+    letter-spacing: .3px;
+  }
+  .video-iframe {
+    width: 100%; height: 100%; border: 0; display: block;
+    aspect-ratio: 16 / 9;
+  }
+  .video-info {
+    padding: 12px 14px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+  .video-title {
+    margin: 0;
+    font-size: 13.5px; font-weight: 700;
+    line-height: 1.4; letter-spacing: -.1px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .video-meta {
+    font-size: 11.5px; color: #8b90a3;
+    display: flex; align-items: center; gap: 8px;
+    flex-wrap: wrap;
+    margin-top: auto;
+  }
+  .yt-icon {
+    color: #dc2626; font-size: 10px;
+    background: #fef2f2; padding: 2px 6px;
+    border-radius: 4px; font-weight: 800;
+    letter-spacing: .3px;
+  }
+  .video-del {
+    position: absolute; top: 8px; right: 8px; z-index: 3;
+    width: 28px; height: 28px; border-radius: 8px;
+    border: none; background: rgba(20,22,31,0.7);
+    color: #fff; font-size: 15px; line-height: 1;
+    cursor: pointer; padding: 0;
+    display: grid; place-items: center;
+    opacity: 0;
+    transition: background .12s, opacity .15s, transform .1s;
+    font-family: inherit;
+  }
+  .video-card:hover .video-del { opacity: 1; }
+  .video-del:hover { background: #dc2626; }
+  .video-del:active { transform: scale(.9); }
+
+  .video-search-card {
+    border: 1px dashed #c7d2fe;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #fafbff 0%, #f4f5ff 100%);
+    padding: 22px 18px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 180px;
+    transition: border-color .15s, background .15s, transform .1s;
+  }
+  .video-search-card:hover {
+    border-color: #a5b4fc;
+    background: linear-gradient(135deg, #f4f5ff 0%, #eceeff 100%);
+    transform: translateY(-1px);
+  }
+  .video-search-card .yt-big {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: #dc2626; color: #fff;
+    display: grid; place-items: center;
+    font-size: 18px; padding-left: 4px;
+    box-shadow: 0 4px 12px rgba(220,38,38,0.3);
+  }
+  .video-search-card h4 {
+    margin: 0; font-size: 13.5px; font-weight: 700;
+    letter-spacing: -.2px;
+  }
+  .video-search-card p {
+    margin: 0; font-size: 12px; color: #7a8093;
+    line-height: 1.5;
+    max-width: 240px;
+  }
+
+  /* ============ BUTTONS ============ */
+  .btn {
+    font-family: inherit;
+    font-size: 12.5px; font-weight: 600;
+    padding: 9px 16px; border-radius: 9px;
+    border: 1px solid transparent;
+    background: #4f46e5; color: #fff;
+    cursor: pointer;
+    transition: background .15s, transform .1s, border-color .15s;
+  }
+  .btn:hover { background: #4338ca; }
+  .btn:active { transform: scale(.97); }
+  .btn.ghost { background: #fff; color: #5a6072; border-color: #e2e4ee; }
+  .btn.ghost:hover { background: #f5f6fa; color: #14161f; }
+  .btn.danger { background: #fff; color: #dc2626; border-color: #fecaca; }
+  .btn.danger:hover { background: #fef2f2; }
+  .icon-btn {
+    width: 34px; height: 34px; flex-shrink: 0;
+    border-radius: 10px; border: 1px solid #e8eaf1; background: #fff;
+    color: #7a8093; cursor: pointer; font-size: 13px;
+    display: grid; place-items: center; padding: 0;
+    transition: background .12s, color .12s, border-color .12s;
+  }
+  .icon-btn:hover { background: #f5f6fa; color: #14161f; border-color: #d6d9e8; }
+
+  /* ============ PROFILE VIEW ============ */
+  .profile-view {
+    position: fixed; inset: 0; z-index: 90;
+    background: #eef0f7;
+    overflow-y: auto;
+    animation: pvIn .28s cubic-bezier(.2,.9,.3,1);
+  }
+  .profile-view[hidden] { display: none; }
+  @keyframes pvIn { from { opacity: 0; transform: translateY(16px); } }
+  .pv-topbar {
+    position: sticky; top: 0; z-index: 2;
+    background: #fff;
+    border-bottom: 1px solid #e8eaf1;
+    box-shadow: 0 1px 3px rgba(20,22,31,0.04);
+  }
+  .pv-topbar-inner {
+    max-width: 780px; margin: 0 auto;
+    padding: 12px 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .pv-back {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 8px 14px 8px 11px;
+    border-radius: 10px; border: 1px solid #e2e4ee; background: #fff;
+    color: #5a6072; font-family: inherit; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: background .12s, color .12s, border-color .12s;
+  }
+  .pv-back:hover { background: #f5f6fa; color: #14161f; border-color: #d6d9e8; }
+  .pv-topbar-title {
+    margin-left: 4px; font-size: 14px; font-weight: 700;
+    letter-spacing: -.2px; color: #14161f;
+  }
+  .pv-topbar .btn { margin-left: auto; }
+  .pv-wrap { max-width: 780px; margin: 0 auto; padding: 28px 24px 60px; }
+  .pv-hero {
+    background: #fff;
+    border: 1px solid #e8eaf1;
+    border-radius: 22px;
+    padding: 34px 28px 30px;
+    text-align: center;
+    box-shadow: 0 6px 24px rgba(20,22,31,0.06);
+    position: relative;
+    overflow: hidden;
+  }
+  .pv-hero::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 96px;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    border-radius: 22px 22px 0 0;
+  }
+  .pv-avatar {
+    width: 96px; height: 96px; border-radius: 50%;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: #fff; display: grid; place-items: center;
+    font-size: 32px; font-weight: 700; letter-spacing: 1px;
+    margin: 0 auto 16px;
+    position: relative;
+    border: 5px solid #fff;
+    box-shadow: 0 8px 22px rgba(79,70,229,0.28);
+    z-index: 1;
+  }
+  .pv-avatar.emoji { font-size: 46px; }
+  .pv-name { font-size: 25px; font-weight: 800; letter-spacing: -.6px; line-height: 1.15; margin: 0; }
+  .pv-meta { font-size: 14px; color: #8b90a3; margin-top: 6px; }
+  .pv-bio {
+    margin: 16px auto 0; max-width: 460px;
+    font-size: 14px; font-style: italic;
+    color: #6b7186; line-height: 1.6;
+    padding: 12px 18px;
+    background: #fafbff;
+    border-radius: 12px;
+    border: 1px solid #eef0f7;
+  }
+  .pv-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; }
+  @media (max-width: 520px) { .pv-stats { grid-template-columns: 1fr; } }
+  .pv-stat {
+    padding: 15px 17px; border-radius: 14px;
+    background: #fff; border: 1px solid #e8eaf1;
+  }
+  .pv-stat-num {
+    font-size: 24px; font-weight: 800; letter-spacing: -.5px;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+  }
+  .pv-stat-label {
+    font-size: 11.5px; color: #8b90a3;
+    text-transform: uppercase; letter-spacing: .7px;
+    font-weight: 700; margin-top: 6px;
+  }
+  .pv-card {
+    margin-top: 18px;
+    background: #fff; border: 1px solid #e8eaf1;
+    border-radius: 18px; padding: 22px 24px;
+    box-shadow: 0 4px 16px rgba(20,22,31,0.04);
+  }
+  .pv-card-title {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .8px;
+    color: #4f46e5; font-weight: 800; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .pv-card-title::before {
+    content: ''; width: 4px; height: 14px;
+    background: linear-gradient(180deg, #4f46e5, #7c3aed);
+    border-radius: 2px;
+  }
+  .pv-chip-wrap { display: flex; flex-wrap: wrap; gap: 7px; }
+  .pv-chip {
+    display: inline-block; padding: 7px 14px; border-radius: 20px;
+    font-size: 13px; font-weight: 600;
+  }
+  .pv-chip.get  { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+  .pv-chip.give { background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; }
+  .pv-chip .pv-custom-tag {
+    font-size: 9px; font-weight: 800;
+    letter-spacing: .5px; text-transform: uppercase;
+    color: #7c3aed; background: rgba(124,58,237,0.14);
+    padding: 1px 5px; border-radius: 4px;
+    margin-left: 5px;
+  }
+  .pv-empty-note { font-size: 13px; color: #a8adbd; font-style: italic; }
+  .pv-story-item { margin-bottom: 16px; }
+  .pv-story-item:last-child { margin-bottom: 0; }
+  .pv-story-key {
+    font-size: 10.5px; text-transform: uppercase;
+    letter-spacing: .7px; color: #a0a5b7;
+    font-weight: 700; margin-bottom: 6px;
+  }
+  .pv-story-val { font-size: 13.5px; color: #14161f; line-height: 1.6; }
+  .pv-story-val.quote {
+    font-style: italic; color: #4a5062;
+    padding-left: 12px; border-left: 3px solid #c7d2fe;
+  }
+  .pv-mini-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pv-mini-chip {
+    display: inline-block; padding: 4px 11px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #f4f5ff; color: #4338ca;
+    border: 1px solid #c7d2fe;
+  }
+  .pv-story-empty {
+    padding: 8px 0 4px;
+    font-size: 13px; color: #8b90a3; line-height: 1.55;
+  }
+  .pv-danger { margin-top: 26px; text-align: center; }
+  .pv-danger .btn { font-size: 12px; }
+
+  /* ============ MODAL ============ */
+  .overlay {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(20,22,31,0.55);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    display: grid; place-items: center;
+    padding: 20px;
+    animation: fade .18s ease;
+  }
+  .overlay[hidden] { display: none; }
+  @keyframes fade { from { opacity: 0; } }
+  .modal {
+    width: 100%; max-width: 500px;
+    background: #fff; border-radius: 20px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+    max-height: 92vh; overflow-y: auto;
+    animation: pop .22s cubic-bezier(.2,.9,.3,1.15);
+  }
+  @keyframes pop { from { opacity: 0; transform: translateY(14px) scale(.97); } }
+  .modal-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 18px 20px 15px; border-bottom: 1px solid #f0f1f6;
+  }
+  .modal-head h3 { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -.3px; }
+  .modal-head .icon-btn { margin-left: auto; }
+  #profileForm { padding: 18px 20px 20px; }
+  .form-section { margin-bottom: 20px; }
+  .form-section-title {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .8px;
+    color: #4f46e5; font-weight: 800; margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .form-section-title::before {
+    content: ''; width: 4px; height: 14px;
+    background: linear-gradient(180deg, #4f46e5, #7c3aed);
+    border-radius: 2px;
+  }
+  .field { display: block; margin-bottom: 13px; }
+  .field > span {
+    display: block; font-size: 12px; font-weight: 600;
+    color: #5a6072; margin-bottom: 6px;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%; font-family: inherit; font-size: 14px;
+    padding: 10px 12px; border-radius: 10px;
+    border: 1px solid #e2e4ee; background: #fbfbfe; color: #14161f;
+    outline: none;
+    transition: border-color .15s, box-shadow .15s, background .15s;
+  }
+  .field textarea { resize: vertical; min-height: 64px; max-height: 140px; line-height: 1.5; }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: #4f46e5; background: #fff;
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+  }
+  .field input::placeholder, .field textarea::placeholder { color: #b3b8c8; }
+  .field.invalid input { border-color: #ef4444; background: #fff; }
+  .err { display: none; font-size: 11.5px; color: #dc2626; margin-top: 5px; font-weight: 500; }
+  .field.invalid .err { display: block; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 420px) { .grid2 { grid-template-columns: 1fr; } }
+  .emoji-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .emoji-opt {
+    width: 42px; height: 42px; border-radius: 12px;
+    border: 1px solid #e2e4ee; background: #fff;
+    font-size: 19px; font-weight: 700; color: #5a6072;
+    cursor: pointer; padding: 0; font-family: inherit;
+    display: grid; place-items: center;
+    transition: border-color .12s, background .12s, box-shadow .12s;
+  }
+  .emoji-opt:hover { border-color: #c7d2fe; background: #f5f6ff; }
+  .emoji-opt.on {
+    border-color: #4f46e5; background: #eef2ff;
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+  }
+  .style-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .style-chip {
+    font-family: inherit; font-size: 12.5px; font-weight: 600;
+    padding: 7px 13px; border-radius: 20px;
+    border: 1px solid #e2e4ee; background: #fff; color: #5a6072;
+    cursor: pointer; transition: all .12s;
+  }
+  .style-chip:hover { border-color: #c7d2fe; color: #4338ca; background: #f5f6ff; }
+  .style-chip.on {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: #fff; border-color: transparent;
+    box-shadow: 0 2px 8px rgba(79,70,229,0.3);
+  }
+  .modal-foot {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 20px; padding-top: 18px;
+    border-top: 1px solid #f0f1f6;
+  }
+  .modal-foot .spacer { flex: 1; }
+
+  #toast {
+    position: fixed; left: 50%; bottom: 28px;
+    transform: translate(-50%, 20px);
+    background: #14161f; color: #fff;
+    font-size: 13.5px; font-weight: 500;
+    padding: 12px 20px; border-radius: 11px;
+    opacity: 0; pointer-events: none; z-index: 200;
+    transition: opacity .22s, transform .22s;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+    max-width: calc(100vw - 40px); text-align: center;
+  }
+  #toast.show { opacity: 1; transform: translate(-50%, 0); }
+  .flash { animation: chipFlash 1s ease; }
+  @keyframes chipFlash {
+    0%   { box-shadow: 0 0 0 0 rgba(79,70,229,0.55); }
+    100% { box-shadow: 0 0 0 14px rgba(79,70,229,0); }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <button class="profile-chip" id="profileChip" type="button"></button>
+    <div class="topbar-brand">
+      <span class="brand-mark">?</span>
+      Track You Revival
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <h1>Don't just learn from a screen. Learn with someone.</h1>
+    <p>Set your topic levels, find study partners, read peers' notes, and watch topic videos — or add your own.</p>
+  </div>
+</section>
+
+<main>
+  <section class="panel">
+    <div class="panel-head">
+      <div class="head-row">
+        <div>
+          <h2>Your topic levels</h2>
+          <p>Tap a number 1–5 for each topic. 1–2 means you need help, 4–5 means you can teach it.</p>
+        </div>
+        <button class="add-topic-btn" id="addTopicBtn" type="button">
+          <span>+</span> Add topic
+        </button>
+      </div>
+    </div>
+
+    <div class="add-form" id="addTopicForm" hidden>
+      <div class="grid2">
+        <input id="newTopicName" type="text" maxlength="40" placeholder="Topic name (e.g. Linear Algebra)" autocomplete="off">
+        <input id="newTopicSubject" type="text" maxlength="30" placeholder="Subject (e.g. Mathematics)" autocomplete="off">
+      </div>
+      <div class="add-form-actions">
+        <button class="btn" id="saveTopicBtn" type="button">Add topic</button>
+        <button class="btn ghost" id="cancelTopicBtn" type="button">Cancel</button>
+      </div>
+    </div>
+
+    <div class="topic-list" id="topicList"></div>
+    <div class="legend">
+      <span><i class="dot" style="background:#f59e0b"></i> Need help</span>
+      <span><i class="dot" style="background:#94a3b8"></i> Getting there</span>
+      <span><i class="dot" style="background:#10b981"></i> Can teach</span>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Your study partners</h2>
+      <p id="matchSub">Ranked by how much you can learn from them — and how much they can learn from you.</p>
+    </div>
+    <div class="match-list" id="matchList"></div>
+  </section>
+</main>
+
+<section class="notes-wrap">
+  <div class="panel">
+    <div class="panel-head">
+      <div class="head-row">
+        <div>
+          <h2>Study notes</h2>
+          <p>Pick a topic to read shared notes — or add your own to help others.</p>
+        </div>
+        <button class="add-topic-btn" id="addNoteBtn" type="button">
+          <span>+</span> Add note
+        </button>
+      </div>
+    </div>
+    <div class="notes-topics" id="notesTopics"></div>
+    <div class="notes-body">
+      <div class="notes-header">
+        <h3 id="notesTopicName">—</h3>
+        <span class="notes-count" id="notesCount"></span>
+        <span class="auto-provided" id="autoBadge" hidden>Auto-provided for this topic</span>
+      </div>
+      <div id="notesList"></div>
+    </div>
+  </div>
+</section>
+
+<section class="videos-wrap">
+  <div class="panel">
+    <div class="panel-head">
+      <div class="head-row">
+        <div>
+          <h2>Study videos</h2>
+          <p>Pick a topic to watch a video explanation — or add one that helped you.</p>
+        </div>
+        <button class="add-topic-btn" id="addVideoBtn" type="button">
+          <span>+</span> Add video
+        </button>
+      </div>
+    </div>
+    <div class="notes-topics" id="videoTopics"></div>
+    <div class="videos-body">
+      <div class="notes-header">
+        <h3 id="videoTopicName">—</h3>
+        <span class="notes-count" id="videoCount"></span>
+        <span class="auto-provided" id="videoAutoBadge" hidden>Curated for this topic</span>
+      </div>
+      <div id="videoList"></div>
+    </div>
+  </div>
+</section>
+
+<div class="profile-view" id="profileView" hidden>
+  <div class="pv-topbar">
+    <div class="pv-topbar-inner">
+      <button class="pv-back" id="pvBack" type="button"><span>?</span> Back</button>
+      <span class="pv-topbar-title">My Profile</span>
+      <button class="btn" id="pvEdit" type="button">?? Edit profile</button>
+    </div>
+  </div>
+  <div class="pv-wrap" id="pvBody"></div>
+</div>
+
+<div class="overlay" id="overlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <h3 id="modalTitle">Create your profile</h3>
+      <button type="button" class="icon-btn" id="closeModal" aria-label="Close">?</button>
+    </div>
+
+    <form id="profileForm" novalidate>
+      <div class="form-section">
+        <div class="form-section-title">About you</div>
+
+        <label class="field" id="nameField">
+          <span>Full name *</span>
+          <input id="fName" type="text" maxlength="40" placeholder="e.g. Priya Sharma" autocomplete="name">
+          <div class="err">Please enter your name.</div>
+        </label>
+
+        <div class="grid2">
+          <label class="field">
+            <span>Course / Branch</span>
+            <input id="fCourse" type="text" maxlength="30" placeholder="e.g. CSE">
+          </label>
+          <label class="field">
+            <span>Year</span>
+            <select id="fYear">
+              <option>1st year</option>
+              <option>2nd year</option>
+              <option>3rd year</option>
+              <option>4th year</option>
+              <option>Postgraduate</option>
+              <option>Other</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Short intro (optional)</span>
+          <input id="fBio" type="text" maxlength="90" placeholder="e.g. I explain best with real-life examples">
+        </label>
+
+        <div class="field" style="margin-bottom:0">
+          <span>Avatar</span>
+          <div class="emoji-row" id="emojiRow"></div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Your learning story</div>
+
+        <label class="field">
+          <span>What's your biggest study challenge right now?</span>
+          <textarea id="fChallenge" maxlength="200"
+            placeholder="e.g. I lose focus while solving long problems and give up too quickly."></textarea>
+        </label>
+
+        <div class="field">
+          <span>How do you learn best?</span>
+          <div class="style-chips" id="styleChips"></div>
+        </div>
+
+        <div class="grid2">
+          <label class="field">
+            <span>Peer-teaching experience</span>
+            <select id="fExperience">
+              <option value="">Not set</option>
+              <option>Just starting out</option>
+              <option>Some experience</option>
+              <option>I teach often</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Availability</span>
+            <input id="fAvailability" type="text" maxlength="40" placeholder="e.g. Weekday evenings">
+          </label>
+        </div>
+
+        <label class="field" style="margin-bottom:0">
+          <span>What do you want to improve?</span>
+          <input id="fGoal" type="text" maxlength="80"
+            placeholder="e.g. Solve probability problems confidently in exams">
+        </label>
+      </div>
+
+      <div class="modal-foot">
+        <button type="button" class="btn danger" id="deleteProfileBtn" hidden>Remove</button>
+        <div class="spacer"></div>
+        <button type="button" class="btn ghost" id="cancelBtn">Cancel</button>
+        <button type="submit" class="btn" id="saveBtn">Save profile</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* =========================================================
+   0. SAFE STORAGE
+   ========================================================= */
+const mem = {};
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return mem[k] ?? null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) { mem[k] = v; } },
+  remove(k) { try { localStorage.removeItem(k); } catch (e) { delete mem[k]; } }
+};
+
+/* =========================================================
+   1. DATA
+   ========================================================= */
+const DEFAULT_TOPICS = [
+  { id: 'prob',    name: 'Probability',          subject: 'Mathematics' },
+  { id: 'calc',    name: 'Calculus',             subject: 'Mathematics' },
+  { id: 'dbms',    name: 'DBMS',                 subject: 'Computer Science' },
+  { id: 'ds',      name: 'Data Structures',      subject: 'Computer Science' },
+  { id: 'thermo',  name: 'Thermodynamics',       subject: 'Physics' },
+  { id: 'orgchem', name: 'Organic Chemistry',    subject: 'Chemistry' },
+  { id: 'writing', name: 'English Writing',      subject: 'Language' },
+  { id: 'acct',    name: 'Financial Accounting', subject: 'Commerce' }
+];
+const DEFAULT_IDS = new Set(DEFAULT_TOPICS.map(t => t.id));
+
+const STUDENTS = [
+  { id:'s1', name:'Priya Sharma',  year:'2nd year, CSE',  avatar:'PS',
+    levels:{ prob:5, calc:4, dbms:2, ds:2, thermo:3, orgchem:3, writing:3, acct:3 } },
+  { id:'s2', name:'Rohan Verma',   year:'3rd year, CSE',  avatar:'RV',
+    levels:{ prob:4, calc:5, dbms:3, ds:3, thermo:3, orgchem:2, writing:5, acct:3 } },
+  { id:'s3', name:'Ananya Iyer',   year:'2nd year, IT',   avatar:'AI',
+    levels:{ prob:2, calc:2, dbms:5, ds:5, thermo:2, orgchem:3, writing:3, acct:3 } },
+  { id:'s4', name:'Karthik Rao',   year:'3rd year, Mech', avatar:'KR',
+    levels:{ prob:3, calc:4, dbms:2, ds:2, thermo:5, orgchem:4, writing:2, acct:3 } },
+  { id:'s5', name:'Meera Nair',    year:'2nd year, BCom', avatar:'MN',
+    levels:{ prob:2, calc:2, dbms:3, ds:2, thermo:2, orgchem:3, writing:5, acct:5 } },
+  { id:'s6', name:'Dev Malhotra',  year:'4th year, CSE',  avatar:'DM',
+    levels:{ prob:3, calc:3, dbms:4, ds:5, thermo:2, orgchem:2, writing:2, acct:2 } },
+  { id:'s7', name:'Sara Khan',     year:'1st year, BBA',  avatar:'SK',
+    levels:{ prob:2, calc:2, dbms:2, ds:2, thermo:3, orgchem:4, writing:4, acct:5 } },
+  { id:'s8', name:'Imran Sheikh',  year:'3rd year, EEE',  avatar:'IS',
+    levels:{ prob:4, calc:5, dbms:3, ds:3, thermo:4, orgchem:3, writing:3, acct:3 } }
+];
+
+const PEER_AUTHORS = [
+  { name: 'Aditya Menon', avatar: 'AM' },
+  { name: 'Riya Kapoor',  avatar: 'RK' },
+  { name: 'Vikram Bose',  avatar: 'VB' },
+  { name: 'Neha Gupta',   avatar: 'NG' },
+  { name: 'Arjun Pillai', avatar: 'AP' },
+  { name: 'Zara Ahmed',   avatar: 'ZA' },
+  { name: 'Kabir Singh',  avatar: 'KS' },
+  { name: 'Ishita Roy',   avatar: 'IR' }
+];
+
+const AUTO_TIMES = ['2 days ago', '4 days ago', '1 week ago', '2 weeks ago', '3 weeks ago', '1 month ago'];
+
+/* =========================================================
+   AUTO-NOTE LIBRARY — keyword matching
+   ========================================================= */
+const KEYWORD_NOTE_LIBRARY = [
+  {
+    keywords: ['algebra', 'matrices', 'matrix', 'determinant', 'vector space', 'eigen', 'linear equation'],
+    notes: [
+      { title: 'Solving linear systems — elimination first',
+        content: 'For 2–3 unknowns, use Gauss elimination:\n\n1. Write the augmented matrix.\n2. Use row operations to get upper-triangular form.\n3. Back-substitute from the bottom up.\n\nWhy elimination over substitution? It scales better and the row operations are easy to verify. Always check by plugging the answer back into the original equations.' },
+      { title: 'Matrix multiplication — rows meet columns',
+        content: '(AB)?? = (row i of A) · (column j of B)\n\nDimension rule: if A is m×n and B is n×p, then AB is m×p. The inner dimensions must match.\n\nRemember: AB ? BA in general. Matrix multiplication is NOT commutative — this single fact explains most "surprising" linear algebra results.' },
+      { title: 'Determinants — what they actually mean',
+        content: 'det(A) is the factor by which A scales area (2D) or volume (3D).\n\nKey facts:\n• det(A) = 0 ? A is singular (no inverse).\n• det(AB) = det(A)·det(B).\n• det(A?) = det(A).\n• Swapping two rows flips the sign.\n\nGeometric intuition: singular matrices squash space onto a lower dimension — that is why they cannot be inverted.' },
+      { title: 'Eigenvalues — the directions that do not rotate',
+        content: 'Av = ?v means: applying A to v just scales it by ?.\n\nTo find eigenvalues: solve det(A - ?I) = 0.\nTo find eigenvectors: plug each ? back and solve (A - ?I)v = 0.\n\nUses: principal component analysis (PCA), stability analysis, vibration modes, Google PageRank.' }
+    ]
+  },
+  {
+    keywords: ['trigonometry', 'trig', 'sine', 'cosine', 'tangent', 'triangle', 'geometry'],
+    notes: [
+      { title: 'The unit circle beats memorising tables',
+        content: 'Every trig value comes from the unit circle — a circle of radius 1 centred at the origin.\n\n• cos ? = x-coordinate\n• sin ? = y-coordinate\n• tan ? = sin ? / cos ?\n\nQuadrant signs — "All Students Take Calculus":\n• Q1: All positive\n• Q2: Sin positive\n• Q3: Tan positive\n• Q4: Cos positive' },
+      { title: 'Sine rule vs cosine rule — pick the right one',
+        content: 'SINE RULE: a/sin A = b/sin B = c/sin C\nUse when you know: two angles + one side, OR two sides + one non-included angle.\n\nCOSINE RULE: c² = a² + b² - 2ab·cos C\nUse when you know: three sides, OR two sides + the included angle.\n\nQuick call: if the angle you know is BETWEEN the two sides you know, use cosine rule.' },
+      { title: 'Six trig identities you must know cold',
+        content: '1. sin²? + cos²? = 1\n2. 1 + tan²? = sec²?\n3. 1 + cot²? = cosec²?\n4. sin(A ± B) = sinA cosB ± cosA sinB\n5. cos(A ± B) = cosA cosB ± sinA sinB\n6. sin 2? = 2 sin? cos?\n\nThese six cover almost every school and first-year exam identity.' }
+    ]
+  },
+  {
+    keywords: ['statistics', 'stats', 'data analysis', 'hypothesis', 'regression'],
+    notes: [
+      { title: 'Mean vs median vs mode — when each lies',
+        content: 'MEAN: sum / count. Sensitive to outliers. One extreme value skews it massively.\n\nMEDIAN: middle value when sorted. Robust to outliers.\n\nMODE: most frequent value. Only meaningful for categorical or discrete data.\n\nRule: if your data has outliers (income, house prices), report the median.' },
+      { title: 'Standard deviation in one paragraph',
+        content: 'SD measures how spread out values are from the mean.\n\nSmall SD ? values cluster near the mean.\nLarge SD ? values spread widely.\n\nSteps: take deviations, square them (to kill signs), average them (variance), then take the square root.\n\nFor a normal distribution: 68% within 1 SD, 95% within 2 SD, 99.7% within 3 SD.' },
+      { title: 'Hypothesis testing — the 5-step routine',
+        content: '1. State H0 (null — no effect) and H1 (alternative).\n2. Choose a significance level a (usually 0.05).\n3. Compute the test statistic (z, t, ?², F).\n4. Find the p-value.\n5. Compare: p < a ? reject H0. Otherwise, fail to reject.\n\nRemember: "fail to reject" ? "accept". Absence of evidence is not evidence of absence.' },
+      { title: 'Correlation is not causation',
+        content: 'Two variables can move together without one causing the other. Common explanations:\n\n• Reverse causation (B causes A)\n• Common cause (C causes both A and B)\n• Coincidence (spurious correlation)\n\nTo argue causation, you need temporal order, dose-response, and rule out confounders — ideally via a controlled experiment.' }
+    ]
+  },
+  {
+    keywords: ['mechanic', 'kinematic', 'newton', 'force', 'motion', 'gravity', 'projectile'],
+    notes: [
+      { title: "Newton's three laws as a problem-solving checklist",
+        content: '1st law (inertia): if net force = 0, velocity is constant. Use it to spot when forces must balance.\n\n2nd law: F_net = ma. Always find the net force first, then divide by mass.\n\n3rd law: equal and opposite reactions — but they act on DIFFERENT bodies, so they never cancel.\n\nChecklist: draw the body ? list all forces ? add as vectors ? apply F = ma.' },
+      { title: 'Projectile motion — always split x and y',
+        content: 'The two axes are INDEPENDENT. That is the entire trick.\n\nHorizontal (x): constant velocity.\nx = u·cos? · t\n\nVertical (y): constant acceleration g = 9.8 m/s².\ny = u·sin? · t - ½gt²\nv_y = u·sin? - g·t\n\nTime of flight: t = 2·u·sin? / g\nRange: R = u²·sin(2?) / g\nMax height: H = u²·sin²? / (2g)' },
+      { title: 'Free body diagrams — draw it every single time',
+        content: 'A free body diagram (FBD) shows ALL forces acting ON a single object.\n\nSteps:\n1. Isolate the object.\n2. Draw arrows for weight, normal force, friction, tension, applied force.\n3. Label each force.\n4. Choose axes aligned with motion if possible.\n5. Apply F = ma along each axis.\n\nSkipping the FBD is the #1 reason students get mechanics wrong.' }
+    ]
+  },
+  {
+    keywords: ['optics', 'light', 'lens', 'mirror', 'refraction', 'reflection'],
+    notes: [
+      { title: 'Lens and mirror sign conventions (Cartesian)',
+        content: 'Measure everything from the pole / optical centre.\n• Distances in the direction of incident light ? positive\n• Distances opposite to incident light ? negative\n\nMirror formula: 1/v + 1/u = 1/f\nLens formula:   1/v - 1/u = 1/f\n\nFocal length: concave mirror / convex lens ? positive. Convex mirror / concave lens ? negative.' },
+      { title: "Snell's law and total internal reflection",
+        content: "Snell's law: n1 sin ?1 = n2 sin ?2\n\nWhen light goes from denser to rarer (n1 > n2), the refracted ray bends AWAY from the normal. At the critical angle, it stops refracting.\n\nCritical angle: sin ?_c = n2 / n1\n\nBeyond ?_c, 100% of light reflects back inside. This is how optical fibres and a diamond's sparkle work." }
+    ]
+  },
+  {
+    keywords: ['electric', 'current', 'voltage', 'circuit', 'resistance', 'ohm', 'magnet'],
+    notes: [
+      { title: "Ohm's law and power — the three formulas",
+        content: 'V = I·R  (Ohm\'s law)\nP = V·I  (power)\nP = I²R = V²/R  (substitutions)\n\nUnits: V (volts), I (amps), R (ohms), P (watts).\n\nKey insight: double the voltage across a fixed resistor ? power QUADRUPLES (P ? V²).' },
+      { title: 'Series vs parallel — at a glance',
+        content: 'SERIES:\n• Same current through every component.\n• Voltages add.\n• R_eq = R1 + R2 + ...\n\nPARALLEL:\n• Same voltage across every branch.\n• Currents add.\n• 1/R_eq = 1/R1 + 1/R2 + ...\n\nHouse wiring is parallel — that is why every appliance gets the full 220V.' },
+      { title: "Kirchhoff's two laws",
+        content: 'KCL (junction rule): sum of currents entering = sum leaving. Charge is conserved.\n\nKVL (loop rule): sum of voltage changes around any closed loop = 0. Energy is conserved.\n\nMethod:\n1. Label all currents with assumed directions.\n2. Apply KCL at junctions.\n3. Apply KVL around loops.\n4. Solve the linear system.\n\nIf a current comes out negative, its real direction is opposite to your assumption.' }
+    ]
+  },
+  {
+    keywords: ['java ', 'java,', 'oop', 'oops', 'object oriented', 'inheritance', 'polymorphism'],
+    notes: [
+      { title: 'OOP in four pillars (with a real example)',
+        content: 'ENCAPSULATION — bundle data + methods, hide internals.\nINHERITANCE — a class inherits from another (Car extends Vehicle).\nPOLYMORPHISM — same interface, different behaviour (shape.area() works for Circle and Square).\nABSTRACTION — expose what, hide how (List interface, ArrayList implementation).\n\nMnemonic: A PIE (Abstraction, Polymorphism, Inheritance, Encapsulation).' },
+      { title: '== vs .equals() — the classic Java trap',
+        content: '== compares references (same object?).\n.equals() compares content (logically equal?).\n\nExample:\n  String a = new String("hi");\n  String b = new String("hi");\n  a == b       // false\n  a.equals(b)  // true\n\nRule: for objects use .equals(). For primitives (int, char, boolean) use ==.' },
+      { title: 'ArrayList vs LinkedList vs HashMap',
+        content: 'ArrayList: dynamic array. Fast random access O(1), slow middle insert/delete O(n). Default choice.\n\nLinkedList: doubly linked. Fast insert/delete at ends O(1), slow random access O(n).\n\nHashMap: key-value pairs. O(1) average lookup. Great for counting and caching.\n\nRule: index access? ArrayList. Head/tail ops? LinkedList. Key lookup? HashMap.' }
+    ]
+  },
+  {
+    keywords: ['python', 'pandas', 'numpy', 'django', 'flask'],
+    notes: [
+      { title: "Python's four core containers",
+        content: 'LIST: ordered, mutable, allows duplicates. [1, 2, 3]\nTUPLE: ordered, immutable, allows duplicates. (1, 2, 3)\nSET: unordered, mutable, no duplicates. {1, 2, 3}\nDICT: key-value pairs, unique keys. {"a": 1}\n\nQuick guide:\n• Order + change? ? list\n• Order + safety? ? tuple\n• Uniqueness + fast membership? ? set\n• Key lookup? ? dict' },
+      { title: 'List comprehensions — cleaner loops',
+        content: 'Instead of:\n  squares = []\n  for x in range(10):\n      squares.append(x*x)\n\nWrite:\n  squares = [x*x for x in range(10)]\n\nWith a condition:\n  evens = [x for x in range(20) if x % 2 == 0]\n\nReadability rule: if it needs more than one "for" or one "if", use a regular loop.' },
+      { title: 'Three built-ins that clean up your code',
+        content: 'enumerate — index AND value:\n  for i, item in enumerate(items):\n\nzip — pair up two lists:\n  for name, score in zip(names, scores):\n\ndict.items() — keys and values:\n  for key, val in my_dict.items():\n\nThese three replace 90% of the "i = 0 ... i += 1" patterns beginners write.' }
+    ]
+  },
+  {
+    keywords: [' c ', 'c++', 'cpp', 'pointer', 'malloc', 'memory management'],
+    notes: [
+      { title: 'Pointers in one page',
+        content: 'A pointer stores the ADDRESS of another variable.\n\n  int x = 5;\n  int *p = &x;   // p holds address of x\n  *p = 10;       // now x is 10\n\n• &x  ? address-of operator\n• *p  ? dereference operator\n\nCommon mistakes:\n• Uninitialised pointer (undefined behaviour).\n• Forgetting to free malloc\'d memory (leak).\n• Dereferencing NULL or a dangling pointer (crash).' },
+      { title: 'Stack vs heap memory',
+        content: 'STACK:\n• Automatic allocation when a function is called.\n• Fast.\n• Limited size (a few MB).\n• Freed automatically on return.\n\nHEAP:\n• Manual allocation via malloc / new.\n• Larger, slower.\n• You must free it.\n• Persists until freed.\n\nRule of thumb: small, short-lived ? stack. Large or long-lived ? heap.' },
+      { title: 'Pass by value vs pass by reference',
+        content: 'Pass by value: function gets a COPY. Changes inside do not affect the original.\n\nPass by reference (via pointer or &): function works on the ORIGINAL. Changes persist.\n\nIn C: pass a pointer.\nIn C++: use references — int& is cleaner than int*.\n\nWhen to use which: pass by value for small primitives, pass by const reference for large objects.' }
+    ]
+  },
+  {
+    keywords: ['javascript', 'react', 'node', 'html', 'css', 'web development', 'frontend', 'front-end'],
+    notes: [
+      { title: 'var vs let vs const — why const wins',
+        content: 'var — function-scoped, hoisted, can be redeclared. Legacy.\nlet — block-scoped, can be reassigned.\nconst — block-scoped, cannot be reassigned.\n\nDefault to const. Switch to let only when you need to reassign. Never use var in modern code.\n\nNote: const objects can still have their properties changed — const only prevents reassignment of the binding.' },
+      { title: 'JavaScript async — from callbacks to async/await',
+        content: '1. Callbacks (old): doThing(function(r){...})\n\n2. Promises (better):\n   doThing().then(r => ...).catch(e => ...)\n\n3. async/await (cleanest):\n   async function run() {\n     try { const r = await doThing(); }\n     catch (e) { ... }\n   }\n\nasync/await is just promises with cleaner syntax. Under the hood, same thing.' },
+      { title: 'The DOM — what it is and how to touch it',
+        content: 'DOM = the browser\'s tree-shaped representation of your HTML.\n\nCommon operations:\n• document.querySelector(".btn")\n• document.querySelectorAll("li")\n• el.textContent = "hi"\n• el.classList.add("active")\n• el.addEventListener("click", fn)\n\nModern frameworks (React, Vue) update the DOM for you — but raw DOM understanding makes debugging far easier.' }
+    ]
+  },
+  {
+    keywords: ['machine learning', 'deep learning', 'neural', 'artificial intelligence', 'data science', ' ml '],
+    notes: [
+      { title: 'Supervised vs unsupervised vs reinforcement',
+        content: 'SUPERVISED: labelled data. Predict an output from inputs (classification, regression).\n\nUNSUPERVISED: no labels. Find structure (clustering, dimensionality reduction).\n\nREINFORCEMENT: an agent learns by interacting with an environment and receiving rewards.\n\nQuick decision: labels? ? supervised. No labels? ? unsupervised. Sequential decisions? ? reinforcement.' },
+      { title: 'Overfitting — signs, causes, fixes',
+        content: 'Signs: great training accuracy, poor validation/test accuracy.\n\nCauses:\n• Model too complex for the data.\n• Too little training data.\n• Training for too long.\n\nFixes:\n• More data or augmentation.\n• Regularisation (L1, L2, dropout).\n• Early stopping.\n• Simpler model.' },
+      { title: 'Bias vs variance — the central tradeoff',
+        content: 'BIAS: error from wrong assumptions. High bias ? underfitting.\n\nVARIANCE: error from sensitivity to training data. High variance ? overfitting.\n\nTotal error ˜ bias² + variance + noise.\n\nTradeoff: more complex models reduce bias but increase variance. Find the sweet spot via regularisation and cross-validated model selection.' },
+      { title: 'The ML workflow in 6 steps',
+        content: '1. Frame the problem — supervised? classification or regression?\n2. Collect & clean the data (this is often 60%+ of the work).\n3. Split: train / validation / test.\n4. Choose a baseline model. Train.\n5. Evaluate on validation. Tune hyperparameters.\n6. Final evaluation on the test set (touch it once).\n\nDeploy, monitor, retrain — the loop never really ends.' }
+    ]
+  },
+  {
+    keywords: ['operating system', 'process', 'thread', 'scheduling', 'deadlock'],
+    notes: [
+      { title: 'Process vs thread — the difference that matters',
+        content: 'PROCESS: an independent program in execution. Own memory space, own resources.\n\nTHREAD: a lightweight unit inside a process. Shares memory with sibling threads, but has its own stack and registers.\n\nWhy it matters:\n• Threads switch faster and communicate cheaply.\n• But shared memory means race conditions and the need for locks.\n• A crash in one thread can take down the whole process.' },
+      { title: 'CPU scheduling — FCFS, SJF, Round Robin',
+        content: 'FCFS (First Come First Served): simple, but a long job blocks everyone (convoy effect).\n\nSJF (Shortest Job First): optimal average waiting time, but you must know burst times in advance. Starvation risk.\n\nROUND ROBIN: each process gets a fixed time slice (quantum). Fair and responsive — the basis of most modern schedulers.\n\nMetrics to compare: waiting time, turnaround time, response time, throughput.' },
+      { title: 'Deadlock — the four Coffman conditions',
+        content: 'A deadlock needs ALL FOUR simultaneously:\n\n1. Mutual exclusion — a resource is held exclusively.\n2. Hold and wait — a process holds one resource while waiting for another.\n3. No preemption — resources cannot be forcibly taken away.\n4. Circular wait — a cycle of processes each waiting on the next.\n\nBreak ANY ONE and deadlock becomes impossible. Practical fixes: lock ordering (breaks circular wait), timeouts, or a single global lock.' }
+    ]
+  },
+  {
+    keywords: ['database', 'dbms', 'sql', 'normalisation', 'normalization', 'index', 'relational'],
+    notes: [
+      { title: 'Normalisation in plain English',
+        content: '1NF: every cell holds a single atomic value. No lists in a column.\n\n2NF: 1NF + no partial dependency on part of a composite key.\n\n3NF: 2NF + no transitive dependency (non-key column depending on another non-key column).\n\nWhy bother: less duplication, smaller updates, fewer inconsistencies. In practice, most OLTP schemas aim for 3NF and denormalise only where read speed demands it.' },
+      { title: 'SQL joins — a visual cheat sheet',
+        content: 'INNER JOIN: rows matching in BOTH tables.\n\nLEFT JOIN: all rows from the left table + matches from the right (NULLs where none).\n\nRIGHT JOIN: mirror of LEFT JOIN.\n\nFULL OUTER JOIN: all rows from both sides, NULLs where there is no match.\n\nCROSS JOIN: every row paired with every row (Cartesian product). Use with care.' },
+      { title: 'Indexes — speed at a cost',
+        content: 'An index is a sorted structure (usually a B-tree) that lets the engine find rows without scanning the whole table.\n\nUse an index on: columns in WHERE, JOIN, and ORDER BY.\n\nDo NOT index: tiny tables, columns with very few distinct values, or write-heavy columns.\n\nEvery index speeds up reads but slows down INSERT/UPDATE/DELETE, because the index must be maintained too.' }
+    ]
+  },
+  {
+    keywords: ['thermodynamic', 'entropy', 'enthalpy', 'heat', 'carnot'],
+    notes: [
+      { title: 'The four laws of thermodynamics in one minute',
+        content: 'Zeroth: if A is in equilibrium with B, and B with C, then A is with C. (Defines temperature.)\n\nFirst: energy is conserved. ?U = Q - W.\n\nSecond: entropy of an isolated system never decreases. Heat flows hot ? cold, never the reverse spontaneously.\n\nThird: as T ? 0 K, the entropy of a perfect crystal ? 0. Absolute zero is unreachable.' },
+      { title: 'Entropy without the mysticism',
+        content: 'Entropy is a count of how many microscopic arrangements produce the same macroscopic state.\n\nMore arrangements ? higher entropy.\n\nThat is why a shuffled deck stays shuffled: there are overwhelmingly more disordered arrangements than ordered ones.\n\nThe second law is not a force — it is a statement about probability.' }
+    ]
+  },
+  {
+    keywords: ['organic', 'chemistry', 'reaction', 'mole', 'bond', 'alkane', 'functional group'],
+    notes: [
+      { title: 'Functional groups you must recognise instantly',
+        content: '• Hydroxyl —OH ? alcohols\n• Carbonyl C=O ? aldehydes, ketones\n• Carboxyl —COOH ? carboxylic acids\n• Amine —NH2 ? amines\n• Ester —COO— ? esters\n• Ether —O— ? ethers\n\nRecognising the group tells you most of the reactivity. Learn the groups before you memorise any reaction.' },
+      { title: 'Nucleophile vs electrophile',
+        content: 'NUCLEOPHILE: electron-rich, attacks positive centres. Think "nucleus-loving".\n\nELECTROPHILE: electron-poor, accepts electrons. Think "electron-loving".\n\nA reaction is usually: nucleophile donates a pair ? electrophile accepts.\n\nIf you can label which species is which, you can predict the product in most first-year mechanisms.' },
+      { title: 'SN1 vs SN2 — how to tell them apart',
+        content: 'SN2: one concerted step. Rate = k[substrate][nucleophile]. Backside attack ? inversion of configuration. Favoured by primary carbons and polar aprotic solvents.\n\nSN1: two steps via a carbocation. Rate = k[substrate]. Racemisation. Favoured by tertiary carbons and polar protic solvents.\n\nShortcut: primary ? SN2. Tertiary ? SN1. Secondary ? depends.' }
+    ]
+  },
+  {
+    keywords: ['accounting', 'account', 'finance', 'balance sheet', 'debit', 'credit', 'ledger'],
+    notes: [
+      { title: 'Debit and credit — finally, a rule that sticks',
+        content: 'Debit (Dr) = left side. Credit (Cr) = right side. That is ALL they mean.\n\nAccounting equation: Assets = Liabilities + Equity\n\n• Increase an asset ? debit it.\n• Increase a liability or equity ? credit it.\n• Revenue increases equity ? credit it.\n• Expenses decrease equity ? debit it.\n\nEvery entry: total debits = total credits. Always.' },
+      { title: 'The three financial statements, linked',
+        content: 'INCOME STATEMENT: revenue - expenses = net profit. Covers a period.\n\nBALANCE SHEET: assets = liabilities + equity. A snapshot at one instant.\n\nCASH FLOW STATEMENT: actual cash in and out, split into operating, investing, financing.\n\nThe link: net profit from the income statement flows into retained earnings on the balance sheet. Profit is not cash — that is why the cash flow statement exists.' }
+    ]
+  },
+  {
+    keywords: ['writing', 'essay', 'english', 'grammar', 'composition', 'language'],
+    notes: [
+      { title: 'The paragraph that never fails',
+        content: '1. Topic sentence — state the point.\n2. Evidence — a fact, quote, or example.\n3. Explanation — why the evidence supports the point.\n4. Link — connect to the next paragraph or back to the thesis.\n\nOne idea per paragraph. If you have two ideas, you have two paragraphs.' },
+      { title: 'Cut these five phrases and your writing improves instantly',
+        content: '• "In order to" ? "To"\n• "Due to the fact that" ? "Because"\n• "At this point in time" ? "Now"\n• "It is important to note that" ? delete entirely\n• "Very unique" ? "Unique"\n\nGood writing is mostly good deleting. If a word does no work, cut it.' },
+      { title: 'Active vs passive voice — when each is right',
+        content: 'ACTIVE: "The student solved the problem." Subject acts. Clearer, shorter, stronger.\n\nPASSIVE: "The problem was solved." Subject is acted upon. Useful when the doer is unknown, obvious, or unimportant.\n\nDefault to active. Use passive deliberately in scientific writing where the method matters more than the person.' }
+    ]
+  }
+];
+
+/* =========================================================
+   AUTO-VIDEO LIBRARY — keyword matching
+   ========================================================= */
+const KEYWORD_VIDEO_LIBRARY = [
+  {
+    keywords: ['algebra', 'matrices', 'matrix', 'determinant', 'vector space', 'eigen', 'linear equation'],
+    videos: [
+      { title: 'Essence of linear algebra — chapter 1: Vectors', channel: '3Blue1Brown', yt: 'fNk_zzaMoSs', duration: '9:52' },
+      { title: 'Linear transformations and matrices', channel: '3Blue1Brown', yt: 'k7RM-ot2NWY', duration: '10:58' },
+      { title: 'Matrix multiplication as composition', channel: '3Blue1Brown', yt: 'XkY2DOUCWMU', duration: '10:03' },
+      { title: 'Eigenvectors and eigenvalues — a visual intro', channel: '3Blue1Brown', yt: 'PFDu9oVAE-g', duration: '17:15' }
+    ]
+  },
+  {
+    keywords: ['trigonometry', 'trig', 'sine', 'cosine', 'tangent', 'triangle', 'geometry'],
+    videos: [
+      { title: 'Trigonometry basics — Khan Academy', channel: 'Khan Academy', yt: 'F21S9Wpi0y8', duration: '9:16' },
+      { title: 'The unit circle — explained visually', channel: 'Khan Academy', yt: '1m9p9i-jrYc', duration: '8:21' },
+      { title: 'Sine and cosine — the graphs behind them', channel: 'Khan Academy', yt: 'zFmMOcaBrmk', duration: '11:05' }
+    ]
+  },
+  {
+    keywords: ['statistics', 'stats', 'data analysis', 'hypothesis', 'regression'],
+    videos: [
+      { title: 'Crash Course Statistics — what is statistics?', channel: 'Crash Course', yt: 'sxQaBpKfDRk', duration: '12:16' },
+      { title: 'Bayes theorem — the geometry of uncertainty', channel: '3Blue1Brown', yt: 'HZGCoVF3YvM', duration: '15:11' },
+      { title: 'Standard deviation — explained clearly', channel: 'Khan Academy', yt: 'sQzW3Pz3sXw', duration: '9:33' }
+    ]
+  },
+  {
+    keywords: ['mechanic', 'kinematic', 'newton', 'force', 'motion', 'gravity', 'projectile'],
+    videos: [
+      { title: 'Crash Course Physics #1 — motion in a straight line', channel: 'Crash Course', yt: 'ZM8ECpBuQYE', duration: '10:38' },
+      { title: "Newton's laws of motion — Crash Course", channel: 'Crash Course', yt: 'kKKM8Y-u7ds', duration: '11:04' },
+      { title: 'Projectile motion — the classic problem', channel: 'Khan Academy', yt: 'z24F5gG-5oE', duration: '12:28' }
+    ]
+  },
+  {
+    keywords: ['optics', 'light', 'lens', 'mirror', 'refraction', 'reflection'],
+    videos: [
+      { title: 'Refraction and Snell\'s law — Crash Course', channel: 'Crash Course', yt: 'FUr0eHhXK9U', duration: '10:56' },
+      { title: 'Lenses and mirrors — the ray diagrams', channel: 'Khan Academy', yt: '1g4yHk1Tm3g', duration: '13:41' },
+      { title: 'Total internal reflection — fibre optics', channel: 'Khan Academy', yt: 'B3iBmZ0Mh1Y', duration: '8:47' }
+    ]
+  },
+  {
+    keywords: ['electric', 'current', 'voltage', 'circuit', 'resistance', 'ohm', 'magnet'],
+    videos: [
+      { title: 'Electric current — Crash Course Physics', channel: 'Crash Course', yt: 'mwxkeXrC4wU', duration: '11:02' },
+      { title: "Ohm's law and resistance explained", channel: 'Khan Academy', yt: 'HsLLq6Rm5tU', duration: '11:03' },
+      { title: 'Series and parallel circuits — Crash Course', channel: 'Crash Course', yt: 'gQ2GV8nNnGg', duration: '10:43' }
+    ]
+  },
+  {
+    keywords: ['java ', 'java,', 'oop', 'oops', 'object oriented', 'inheritance', 'polymorphism'],
+    videos: [
+      { title: 'Object-oriented programming — Crash Course CS', channel: 'Crash Course', yt: 'fJWK3wd9u5E', duration: '10:47' },
+      { title: 'Java full course for beginners', channel: 'Programming with Mosh', yt: 'eIrMbAQSU34', duration: '2:30:48' },
+      { title: 'OOP concepts explained with real examples', channel: 'Programming with Mosh', yt: 'pTB0EiLXUC8', duration: '8:14' }
+    ]
+  },
+  {
+    keywords: ['python', 'pandas', 'numpy', 'django', 'flask'],
+    videos: [
+      { title: 'Python full course for beginners', channel: 'Programming with Mosh', yt: '_uQrJ0TkZlc', duration: '6:14:07' },
+      { title: 'Python for beginners — full course', channel: 'freeCodeCamp', yt: 'rfscVS0vtbw', duration: '4:26:52' },
+      { title: 'NumPy explained — the basics', channel: 'freeCodeCamp', yt: 'GB9ByFAIAH4', duration: '58:10' }
+    ]
+  },
+  {
+    keywords: [' c ', 'c++', 'cpp', 'pointer', 'malloc', 'memory management'],
+    videos: [
+      { title: 'Pointers in C — Computerphile', channel: 'Computerphile', yt: 'Rxvvq9p4i0s', duration: '8:03' },
+      { title: 'C programming full course', channel: 'freeCodeCamp', yt: 'KJgsSFOSQv0', duration: '3:46:13' },
+      { title: 'C++ tutorial for beginners', channel: 'Programming with Mosh', yt: 'vLnPwxZdW4Y', duration: '1:12:16' }
+    ]
+  },
+  {
+    keywords: ['javascript', 'react', 'node', 'html', 'css', 'web development', 'frontend', 'front-end'],
+    videos: [
+      { title: 'JavaScript tutorial for beginners', channel: 'Programming with Mosh', yt: 'W6NZfCO5SIk', duration: '1:00:23' },
+      { title: 'JavaScript full course', channel: 'freeCodeCamp', yt: 'PkZNo7MFNFg', duration: '3:26:43' },
+      { title: 'HTML and CSS full course', channel: 'freeCodeCamp', yt: 'mU6anWqZJcc', duration: '2:11:27' }
+    ]
+  },
+  {
+    keywords: ['machine learning', 'deep learning', 'neural', 'artificial intelligence', 'data science', ' ml '],
+    videos: [
+      { title: 'But what is a neural network?', channel: '3Blue1Brown', yt: 'aircAruvnKk', duration: '19:13' },
+      { title: 'Machine learning for beginners', channel: 'freeCodeCamp', yt: 'NWONeJKn6kc', duration: '1:17:10' },
+      { title: 'Gradient descent — how neural nets learn', channel: '3Blue1Brown', yt: 'IHZwWFHWa-w', duration: '21:01' }
+    ]
+  },
+  {
+    keywords: ['operating system', 'process', 'thread', 'scheduling', 'deadlock'],
+    videos: [
+      { title: 'Operating systems — Crash Course CS', channel: 'Crash Course', yt: '26QPDBe-NB8', duration: '13:36' },
+      { title: 'Processes and threads — the difference', channel: 'Computerphile', yt: '4rLW7zg21gI', duration: '7:38' },
+      { title: 'Deadlock in operating systems', channel: 'Neso Academy', yt: 'on6aJ0W8Rzs', duration: '11:45' }
+    ]
+  },
+  {
+    keywords: ['database', 'dbms', 'sql', 'normalisation', 'normalization', 'index', 'relational'],
+    videos: [
+      { title: 'Database design — Crash Course CS', channel: 'Crash Course', yt: '2lDKlJPXeLo', duration: '11:58' },
+      { title: 'SQL tutorial — full database course', channel: 'freeCodeCamp', yt: 'HXV3zeQKqGY', duration: '4:20:39' },
+      { title: 'Database normalisation explained', channel: 'Neso Academy', yt: 'aSbY3hq1BcU', duration: '12:06' }
+    ]
+  },
+  {
+    keywords: ['thermodynamic', 'entropy', 'enthalpy', 'heat', 'carnot'],
+    videos: [
+      { title: 'Thermodynamics — Crash Course Physics', channel: 'Crash Course', yt: '8kB81BEwO_s', duration: '11:19' },
+      { title: 'The second law of thermodynamics', channel: 'Crash Course', yt: 'mn6v0-GgS7o', duration: '11:21' },
+      { title: 'Entropy — the most misunderstood concept', channel: 'Veritasium', yt: 'ZDFOdzsGq5Y', duration: '11:38' }
+    ]
+  },
+  {
+    keywords: ['organic', 'chemistry', 'reaction', 'mole', 'bond', 'alkane', 'functional group'],
+    videos: [
+      { title: 'Crash Course Chemistry — the nucleus', channel: 'Crash Course', yt: 'FSyAehMdpyI', duration: '11:38' },
+      { title: 'Organic chemistry — functional groups', channel: 'Crash Course', yt: 'ybT4dYpY0Y8', duration: '11:11' },
+      { title: 'SN1 and SN2 reactions explained', channel: 'Khan Academy', yt: 'Ll3J7p8gWqA', duration: '12:42' }
+    ]
+  },
+  {
+    keywords: ['accounting', 'account', 'finance', 'balance sheet', 'debit', 'credit', 'ledger'],
+    videos: [
+      { title: 'Accounting basics — debits and credits', channel: 'Accounting Stuff', yt: 'VhwZ9t2b3Zk', duration: '10:45' },
+      { title: 'The balance sheet explained', channel: 'Accounting Stuff', yt: 'VhwZ9t2b3Zk', duration: '9:12' },
+      { title: 'Reading financial statements', channel: 'Khan Academy', yt: 'v7HkGqZ4C1E', duration: '12:30' }
+    ]
+  },
+  {
+    keywords: ['writing', 'essay', 'english', 'grammar', 'composition', 'language'],
+    videos: [
+      { title: 'How to write a good essay — the basics', channel: 'Khan Academy', yt: 'liBmM0wZ4qY', duration: '6:22' },
+      { title: 'Active vs passive voice', channel: 'Khan Academy', yt: 'o6Z0jZ7hx3Y', duration: '5:14' },
+      { title: 'Grammar rules you actually need', channel: 'Khan Academy', yt: 'z1sD0rX7dUY', duration: '7:31' }
+    ]
+  }
+];
+
+/* =========================================================
+   2. HELPERS
+   ========================================================= */
+const $ = id => document.getElementById(id);
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+  ));
+}
+
+function initialsOf(name) {
+  const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return '?';
+  return (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
+}
+
+function hashStr(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return h;
+}
+
+function pipClass(n) {
+  return n <= 2 ? 'lv-weak' : n === 3 ? 'lv-mid' : 'lv-strong';
+}
+
+function relTime(ts) {
+  const diff = Date.now() - ts;
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return 'just now';
+  if (m < 60) return m + 'm ago';
+  const h = Math.floor(m / 60);
+  if (h < 24) return h + 'h ago';
+  const d = Math.floor(h / 24);
+  if (d < 7) return d + 'd ago';
+  const w = Math.floor(d / 7);
+  if (w < 5) return w + 'w ago';
+  return new Date(ts).toLocaleDateString();
+}
+
+/* Extract a YouTube video ID from various URL forms or a bare ID */
+function parseYouTubeId(input) {
+  if (!input) return null;
+  const s = String(input).trim();
+  if (/^[a-zA-Z0-9_-]{11}$/.test(s)) return s;
+  const patterns = [
+    /(?:youtube\.com\/watch\?[^#]*?\bv=)([a-zA-Z0-9_-]{11})/,
+    /(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+    /(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+    /(?:youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/,
+    /(?:youtube\.com\/v\/)([a-zA-Z0-9_-]{11})/,
+    /[?&]v=([a-zA-Z0-9_-]{11})/
+  ];
+  for (const p of patterns) {
+    const m = s.match(p);
+    if (m) return m[1];
+  }
+  return null;
+}
+
+let toastTimer;
+function toast(msg) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* =========================================================
+   3. STATE
+   ========================================================= */
+const K = {
+  profile: 'trackyourevival.profile.v1',
+  levels:  'trackyourevival.levels.v1',
+  custom:  'trackyourevival.custom.v1',
+  notes:   'trackyourevival.notes.v1',
+  videos:  'trackyourevival.videos.v1',
+  seen:    'trackyourevival.seen.v1'
+};
+
+function readJSON(key, fallback) {
+  const raw = store.get(key);
+  if (raw === null || raw === undefined) return fallback;
+  try { return JSON.parse(raw); } catch (e) { return fallback; }
+}
+function writeJSON(key, val) { store.set(key, JSON.stringify(val)); }
+
+/* First-run demo levels so the app is not empty on load */
+const SEED_LEVELS = { prob: 4, calc: 3, dbms: 2, ds: 2, thermo: 1, orgchem: 3, writing: 4, acct: 2 };
+if (store.get(K.levels) === null) writeJSON(K.levels, SEED_LEVELS);
+
+const state = {
+  profile: readJSON(K.profile, null),
+  levels: readJSON(K.levels, {}) || {},
+  customTopics: readJSON(K.custom, []) || [],
+  userNotes: readJSON(K.notes, {}) || {},
+  userVideos: readJSON(K.videos, {}) || {},
+  selectedTopic: null,
+  selectedVideoTopic: null
+};
+
+let playingVideoId = null; /* only one video plays at a time */
+
+function allTopics() {
+  return DEFAULT_TOPICS.concat(state.customTopics);
+}
+
+function saveLevels() { writeJSON(K.levels, state.levels); }
+function saveCustom() { writeJSON(K.custom, state.customTopics); }
+function saveNotes()  { writeJSON(K.notes, state.userNotes); }
+function saveVideos() { writeJSON(K.videos, state.userVideos); }
+
+/* =========================================================
+   4. NOTES ENGINE
+   ========================================================= */
+function genericNotes(topic) {
+  const n = topic.name;
+  return [
+    {
+      title: `${n} — a 20-minute study routine`,
+      content: `1. Spend 3 minutes recalling what you already know about ${n} without notes.\n2. Read one section slowly and write a 3-line summary in your own words.\n3. Do 2 practice problems immediately — not later.\n4. Close everything and explain ${n} out loud as if teaching a friend.\n5. Note the one part that still feels fuzzy; start there tomorrow.\n\nActive recall + immediate practice beats re-reading every time.`
+    },
+    {
+      title: `Breaking ${n} into smaller pieces`,
+      content: `Big topics feel impossible until you split them.\n\nFor ${n}, list every sub-idea you can think of, then rank them from "I could explain this" to "I have no idea".\n\nStudy only the bottom three. Ignore the rest for now.\n\nMost students re-study what they already know because it feels good. That is the trap.`
+    },
+    {
+      title: `Common mistakes in ${n}`,
+      content: `• Memorising steps without understanding why they work.\n• Skipping practice until "after I finish reading".\n• Studying alone when a 10-minute peer explanation would do.\n• Not writing down the exact point where you got stuck.\n\nTry teaching ${n} to someone today — you will find the gaps in under 5 minutes.`
+    }
+  ];
+}
+
+function autoNotesFor(topic) {
+  const hay = (topic.name + ' ' + (topic.subject || '')).toLowerCase();
+  const entry = KEYWORD_NOTE_LIBRARY.find(e => e.keywords.some(k => hay.includes(k)));
+  const raw = entry ? entry.notes : genericNotes(topic);
+  const h = hashStr(topic.id + '|' + topic.name);
+  return raw.map((n, i) => {
+    const a = PEER_AUTHORS[(h + i * 3) % PEER_AUTHORS.length];
+    return {
+      id: 'auto-' + topic.id + '-' + i,
+      title: n.title,
+      content: n.content,
+      author: a.name,
+      avatar: a.avatar,
+      avatarIsEmoji: false,
+      time: AUTO_TIMES[(h + i) % AUTO_TIMES.length],
+      mine: false,
+      auto: true
+    };
+  });
+}
+
+function mineNotesFor(topicId) {
+  const list = state.userNotes[topicId] || [];
+  const p = state.profile;
+  const name = p && p.name ? p.name : 'You';
+  return list.slice().sort((a, b) => b.ts - a.ts).map(n => ({
+    id: n.id,
+    title: n.title,
+    content: n.content,
+    author: name,
+    avatar: p && p.avatar ? p.avatar : initialsOf(name),
+    avatarIsEmoji: !!(p && p.avatar),
+    time: relTime(n.ts),
+    mine: true,
+    auto: false
+  }));
+}
+
+function notesFor(topic) {
+  return mineNotesFor(topic.id).concat(autoNotesFor(topic));
+}
+
+/* =========================================================
+   5. VIDEO ENGINE
+   ========================================================= */
+function genericVideos(topic) {
+  const n = topic.name;
+  return [
+    { title: `${n} — a quick visual introduction`, channel: 'Khan Academy', yt: 'fNk_zzaMoSs', duration: '9:52' },
+    { title: `Study smarter: how to learn ${n} faster`, channel: 'Crash Course', yt: 'zouPoc49xbk', duration: '12:16' },
+    { title: `Explaining ${n} with real-world examples`, channel: '3Blue1Brown', yt: 'WUvTyaaNkzM', duration: '17:04' }
+  ];
+}
+
+function autoVideosFor(topic) {
+  const hay = (topic.name + ' ' + (topic.subject || '')).toLowerCase();
+  const entry = KEYWORD_VIDEO_LIBRARY.find(e => e.keywords.some(k => hay.includes(k)));
+  const raw = entry ? entry.videos : genericVideos(topic);
+  const h = hashStr('v|' + topic.id + '|' + topic.name);
+  return raw.map((v, i) => ({
+    id: 'auto-v-' + topic.id + '-' + i,
+    title: v.title,
+    channel: v.channel,
+    yt: v.yt,
+    duration: v.duration || '',
+    mine: false,
+    auto: true,
+    time: AUTO_TIMES[(h + i) % AUTO_TIMES.length]
+  }));
+}
+
+function mineVideosFor(topicId) {
+  const list = state.userVideos[topicId] || [];
+  const p = state.profile;
+  const name = p && p.name ? p.name : 'You';
+  return list.slice().sort((a, b) => b.ts - a.ts).map(v => ({
+    id: v.id,
+    title: v.title,
+    channel: v.channel || name,
+    yt: v.yt,
+    duration: v.duration || '',
+    mine: true,
+    auto: false,
+    time: relTime(v.ts)
+  }));
+}
+
+function videosFor(topic) {
+  return mineVideosFor(topic.id).concat(autoVideosFor(topic));
+}
+
+/* =========================================================
+   6. MATCHING
+   ========================================================= */
+function scoreMatch(student, mine, topics) {
+  const get = [], give = [];
+  let gain = 0, contrib = 0;
+
+  topics.forEach(t => {
+    const m = mine[t.id] || 0;
+    if (!m) return;
+    const theirs = (student.levels[t.id] !== undefined) ? student.levels[t.id] : 3;
+    const d = theirs - m;
+    if (d >= 2) { get.push({ topic: t, diff: d }); gain += d; }
+    else if (d <= -2) { give.push({ topic: t, diff: -d }); contrib += -d; }
+  });
+
+  const raw = (gain + contrib * 0.6) / Math.max(1, topics.length * 4);
+  const pct = Math.round(Math.min(0.97, raw * 1.7) * 100);
+  return { student, get, give, pct, gain, contrib };
+}
+
+function computeMatches() {
+  const topics = allTopics();
+  const mine = state.levels;
+  const anySet = topics.some(t => (mine[t.id] || 0) > 0);
+  if (!anySet) return [];
+  return STUDENTS
+    .map(s => scoreMatch(s, mine, topics))
+    .filter(r => r.pct > 0 && (r.get.length || r.give.length))
+    .sort((a, b) => b.pct - a.pct || b.gain - a.gain);
+}
+
+/* =========================================================
+   7. RENDER — TOPICS
+   ========================================================= */
+function renderTopics() {
+  const list = $('topicList');
+  list.innerHTML = '';
+
+  allTopics().forEach(t => {
+    const isCustom = !DEFAULT_IDS.has(t.id);
+    const lvl = state.levels[t.id] || 0;
+
+    const row = document.createElement('div');
+    row.className = 'topic-row' + (isCustom ? ' custom' : '');
+
+    const left = document.createElement('div');
+    left.style.minWidth = '0';
+
+    const nameEl = document.createElement('div');
+    nameEl.className = 'topic-name';
+    nameEl.textContent = t.name;
+    if (isCustom) {
+      const tag = document.createElement('span');
+      tag.className = 'custom-tag';
+      tag.textContent = 'custom';
+      nameEl.appendChild(tag);
+    }
+
+    const sub = document.createElement('div');
+    sub.className = 'topic-subject';
+    sub.textContent = t.subject || 'General';
+
+    left.append(nameEl, sub);
+
+    const right = document.createElement('div');
+    right.className = 'pips-wrap';
+
+    const pips = document.createElement('div');
+    pips.className = 'pips';
+    for (let i = 1; i <= 5; i++) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'pip' + (i <= lvl ? ' on ' + pipClass(i) : '');
+      b.textContent = String(i);
+      b.title = i <= 2 ? 'I need help with this' : (i === 3 ? 'Getting there' : 'I can teach this');
+      b.addEventListener('click', () => {
+        state.levels[t.id] = i;
+        saveLevels();
+        renderTopics();
+        renderMatches();
+      });
+      pips.appendChild(b);
+    }
+    right.appendChild(pips);
+
+    if (isCustom) {
+      const rm = document.createElement('button');
+      rm.type = 'button';
+      rm.className = 'remove-topic';
+      rm.textContent = '×';
+      rm.title = 'Remove topic';
+      rm.setAttribute('aria-label', 'Remove topic');
+      rm.addEventListener('click', () => {
+        state.customTopics = state.customTopics.filter(x => x.id !== t.id);
+        delete state.levels[t.id];
+        delete state.userNotes[t.id];
+        delete state.userVideos[t.id];
+        saveCustom(); saveLevels(); saveNotes(); saveVideos();
+        if (state.selectedTopic === t.id) state.selectedTopic = null;
+        if (state.selectedVideoTopic === t.id) state.selectedVideoTopic = null;
+        renderAll();
+        toast('Topic removed');
+      });
+      right.appendChild(rm);
+    }
+
+    row.append(left, right);
+    list.appendChild(row);
+  });
+}
+
+/* =========================================================
+   8. RENDER — MATCHES
+   ========================================================= */
+function renderMatches() {
+  const wrap = $('matchList');
+  wrap.innerHTML = '';
+
+  const topics = allTopics();
+  const anySet = topics.some(t => (state.levels[t.id] || 0) > 0);
+
+  if (!anySet) {
+    const e = document.createElement('div');
+    e.className = 'empty';
+    e.innerHTML = 'Set a few topic levels on the left,<br>and your study partners will appear here.';
+    wrap.appendChild(e);
+    return;
+  }
+
+  const results = computeMatches();
+
+  if (!results.length) {
+    const e = document.createElement('div');
+    e.className = 'empty';
+    e.innerHTML = 'No strong matches yet.<br>Try marking a few topics as <strong>1–2</strong> (need help) or <strong>4–5</strong> (can teach).';
+    wrap.appendChild(e);
+    return;
+  }
+
+  results.slice(0, 6).forEach(r => {
+    const s = r.student;
+
+    const card = document.createElement('div');
+    card.className = 'match';
+
+    const av = document.createElement('div');
+    av.className = 'avatar';
+    av.textContent = s.avatar;
+
+    const body = document.createElement('div');
+    body.className = 'match-body';
+
+    const head = document.createElement('div');
+    head.className = 'match-head';
+
+    const who = document.createElement('div');
+    who.style.minWidth = '0';
+    const nm = document.createElement('div');
+    nm.className = 'match-name';
+    nm.textContent = s.name;
+    const mt = document.createElement('div');
+    mt.className = 'match-meta';
+    mt.textContent = s.year;
+    who.append(nm, mt);
+
+    const score = document.createElement('div');
+    score.className = 'match-score';
+    const pct = document.createElement('span');
+    pct.className = 'pct';
+    pct.textContent = r.pct + '%';
+    const pctLabel = document.createElement('span');
+    pctLabel.className = 'pct-label';
+    pctLabel.textContent = 'match';
+    score.append(pct, pctLabel);
+
+    head.append(who, score);
+
+    const bar = document.createElement('div');
+    bar.className = 'bar';
+    const fill = document.createElement('i');
+    fill.style.width = r.pct + '%';
+    bar.appendChild(fill);
+
+    body.append(head, bar);
+
+    if (r.get.length) {
+      const row = document.createElement('div');
+      row.className = 'row';
+      const lbl = document.createElement('span');
+      lbl.className = 'row-label';
+      lbl.textContent = 'You can learn from them';
+      row.appendChild(lbl);
+      r.get.slice(0, 5).forEach(g => {
+        const c = document.createElement('span');
+        c.className = 'chip get';
+        c.textContent = g.topic.name;
+        row.appendChild(c);
+      });
+      body.appendChild(row);
+    }
+
+    if (r.give.length) {
+      const row = document.createElement('div');
+      row.className = 'row';
+      const lbl = document.createElement('span');
+      lbl.className = 'row-label';
+      lbl.textContent = 'They can learn from you';
+      row.appendChild(lbl);
+      r.give.slice(0, 5).forEach(g => {
+        const c = document.createElement('span');
+        c.className = 'chip give';
+        c.textContent = g.topic.name;
+        row.appendChild(c);
+      });
+      body.appendChild(row);
+    }
+
+    const foot = document.createElement('div');
+    foot.className = 'match-foot';
+    const badge = document.createElement('span');
+    if (r.get.length && r.give.length) {
+      badge.className = 'badge';
+      badge.textContent = '? Two-way match';
+    } else if (r.get.length) {
+      badge.className = 'badge';
+      badge.textContent = '? They can help you';
+    } else {
+      badge.className = 'badge badge-alt';
+      badge.textContent = '? You can help them';
+    }
+    foot.appendChild(badge);
+    body.appendChild(foot);
+
+    card.append(av, body);
+    wrap.appendChild(card);
+  });
+}
+
+/* =========================================================
+   9. RENDER — NOTES
+   ========================================================= */
+function renderNotesTopics() {
+  const wrap = $('notesTopics');
+  wrap.innerHTML = '';
+  const topics = allTopics();
+
+  topics.forEach(t => {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'notes-topic-chip' + (state.selectedTopic === t.id ? ' active' : '');
+
+    const label = document.createElement('span');
+    label.textContent = t.name;
+    chip.appendChild(label);
+
+    if (!DEFAULT_IDS.has(t.id)) {
+      const dot = document.createElement('span');
+      dot.className = 'custom-dot';
+      dot.textContent = '?';
+      chip.appendChild(dot);
+    }
+
+    const count = document.createElement('span');
+    count.className = 'count-badge';
+    count.textContent = String(notesFor(t).length);
+    chip.appendChild(count);
+
+    chip.addEventListener('click', () => {
+      state.selectedTopic = t.id;
+      closeNoteForm();
+      renderNotesTopics();
+      renderNotes();
+    });
+
+    wrap.appendChild(chip);
+  });
+}
+
+function renderNotes() {
+  const topics = allTopics();
+
+  if (!state.selectedTopic || !topics.some(t => t.id === state.selectedTopic)) {
+    state.selectedTopic = topics.length ? topics[0].id : null;
+  }
+
+  const topic = topics.find(t => t.id === state.selectedTopic);
+  const list = $('notesList');
+  list.innerHTML = '';
+
+  if (!topic) {
+    $('notesTopicName').textContent = '—';
+    $('notesCount').textContent = '';
+    $('autoBadge').hidden = true;
+    const e = document.createElement('div');
+    e.className = 'notes-empty';
+    e.textContent = 'Add a topic first to see notes.';
+    list.appendChild(e);
+    return;
+  }
+
+  const mine = mineNotesFor(topic.id);
+  const auto = autoNotesFor(topic);
+  const all = mine.concat(auto);
+
+  $('notesTopicName').textContent = topic.name;
+  $('notesCount').textContent = all.length + (all.length === 1 ? ' note' : ' notes');
+  $('autoBadge').hidden = auto.length === 0;
+
+  if (!all.length) {
+    const e = document.createElement('div');
+    e.className = 'notes-empty';
+    e.innerHTML = '<div class="big">??</div>No notes for this topic yet.<br>Be the first to share one.';
+    list.appendChild(e);
+    return;
+  }
+
+  all.forEach(n => list.appendChild(noteCard(n)));
+}
+
+function noteCard(n) {
+  const card = document.createElement('div');
+  card.className = 'note-card' + (n.mine ? ' mine' : '');
+
+  const head = document.createElement('div');
+  head.className = 'note-head';
+
+  const av = document.createElement('div');
+  av.className = 'note-avatar' + (n.avatarIsEmoji ? ' emoji' : '');
+  av.textContent = n.avatar || initialsOf(n.author);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'note-author-wrap';
+
+  const author = document.createElement('div');
+  author.className = 'note-author';
+  const authorName = document.createElement('span');
+  authorName.textContent = n.author;
+  author.appendChild(authorName);
+  if (n.mine) {
+    const yb = document.createElement('span');
+    yb.className = 'you-badge';
+    yb.textContent = 'You';
+    author.appendChild(yb);
+  }
+  wrap.appendChild(author);
+
+  const time = document.createElement('span');
+  time.className = 'note-time';
+  time.textContent = n.time;
+
+  head.append(av, wrap, time);
+
+  if (n.mine) {
+    const del = document.createElement('button');
+    del.type = 'button';
+    del.className = 'note-del';
+    del.textContent = '×';
+    del.title = 'Delete note';
+    del.setAttribute('aria-label', 'Delete note');
+    del.addEventListener('click', () => {
+      const arr = state.userNotes[state.selectedTopic] || [];
+      state.userNotes[state.selectedTopic] = arr.filter(x => x.id !== n.id);
+      saveNotes();
+      renderNotesTopics();
+      renderNotes();
+      toast('Note deleted');
+    });
+    head.appendChild(del);
+  }
+
+  const title = document.createElement('h4');
+  title.className = 'note-title';
+  title.textContent = n.title;
+
+  const content = document.createElement('div');
+  content.className = 'note-content';
+  content.textContent = n.content;
+
+  card.append(head, title, content);
+  return card;
+}
+
+/* ---------- note form ---------- */
+function closeNoteForm() {
+  const f = $('noteForm');
+  if (f) f.remove();
+}
+
+function openNoteForm() {
+  if (!state.selectedTopic) {
+    toast('Pick a topic first');
+    return;
+  }
+  if ($('noteForm')) {
+    $('noteTitleInput').focus();
+    return;
+  }
+
+  const form = document.createElement('div');
+  form.className = 'note-form';
+  form.id = 'noteForm';
+  form.innerHTML =
+    '<input id="noteTitleInput" type="text" maxlength="80" placeholder="Note title (e.g. Bayes\' theorem in plain words)" autocomplete="off">' +
+    '<textarea id="noteBodyInput" maxlength="1500" placeholder="Write your explanation, steps, or a worked example…"></textarea>' +
+    '<div class="note-form-actions">' +
+      '<button class="btn" id="noteSaveBtn" type="button">Post note</button>' +
+      '<button class="btn ghost" id="noteCancelBtn" type="button">Cancel</button>' +
+    '</div>';
+
+  const body = document.querySelector('.notes-body');
+  body.insertBefore(form, $('notesList'));
+
+  $('noteCancelBtn').addEventListener('click', closeNoteForm);
+
+  $('noteSaveBtn').addEventListener('click', () => {
+    const title = $('noteTitleInput').value.trim();
+    const content = $('noteBodyInput').value.trim();
+
+    if (!title) { toast('Give your note a title'); $('noteTitleInput').focus(); return; }
+    if (!content) { toast('Write something in the note'); $('noteBodyInput').focus(); return; }
+
+    const tid = state.selectedTopic;
+    if (!state.userNotes[tid]) state.userNotes[tid] = [];
+    state.userNotes[tid].push({
+      id: 'n' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+      title,
+      content,
+      ts: Date.now()
+    });
+    saveNotes();
+    closeNoteForm();
+    renderNotesTopics();
+    renderNotes();
+    toast('Note posted — thanks for helping others');
+  });
+
+  $('noteTitleInput').focus();
+}
+
+/* =========================================================
+   10. RENDER — VIDEOS
+   ========================================================= */
+function renderVideoTopics() {
+  const wrap = $('videoTopics');
+  wrap.innerHTML = '';
+  const topics = allTopics();
+
+  topics.forEach(t => {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'notes-topic-chip' + (state.selectedVideoTopic === t.id ? ' active' : '');
+
+    const label = document.createElement('span');
+    label.textContent = t.name;
+    chip.appendChild(label);
+
+    if (!DEFAULT_IDS.has(t.id)) {
+      const dot = document.createElement('span');
+      dot.className = 'custom-dot';
+      dot.textContent = '?';
+      chip.appendChild(dot);
+    }
+
+    const count = document.createElement('span');
+    count.className = 'count-badge';
+    count.textContent = String(videosFor(t).length);
+    chip.appendChild(count);
+
+    chip.addEventListener('click', () => {
+      state.selectedVideoTopic = t.id;
+      playingVideoId = null;
+      closeVideoForm();
+      renderVideoTopics();
+      renderVideos();
+    });
+
+    wrap.appendChild(chip);
+  });
+}
+
+function renderVideos() {
+  const topics = allTopics();
+
+  if (!state.selectedVideoTopic || !topics.some(t => t.id === state.selectedVideoTopic)) {
+    state.selectedVideoTopic = topics.length ? topics[0].id : null;
+  }
+
+  const topic = topics.find(t => t.id === state.selectedVideoTopic);
+  const list = $('videoList');
+  list.innerHTML = '';
+
+  if (!topic) {
+    $('videoTopicName').textContent = '—';
+    $('videoCount').textContent = '';
+    $('videoAutoBadge').hidden = true;
+    const e = document.createElement('div');
+    e.className = 'notes-empty';
+    e.textContent = 'Add a topic first to see videos.';
+    list.appendChild(e);
+    return;
+  }
+
+  const mine = mineVideosFor(topic.id);
+  const auto = autoVideosFor(topic);
+  const all = mine.concat(auto);
+
+  $('videoTopicName').textContent = topic.name;
+  $('videoCount').textContent = all.length + (all.length === 1 ? ' video' : ' videos');
+  $('videoAutoBadge').hidden = auto.length === 0;
+
+  if (!all.length) {
+    const e = document.createElement('div');
+    e.className = 'notes-empty';
+    e.innerHTML = '<div class="big">??</div>No videos for this topic yet.<br>Add one that helped you.';
+    list.appendChild(e);
+    return;
+  }
+
+  const grid = document.createElement('div');
+  grid.className = 'videos-grid';
+
+  all.forEach(v => grid.appendChild(videoCard(v)));
+
+  grid.appendChild(youtubeSearchCard(topic.name));
+
+  list.appendChild(grid);
+}
+
+function videoCard(v) {
+  const card = document.createElement('div');
+  card.className = 'video-card' + (v.mine ? ' mine' : '');
+
+  const thumb = document.createElement('div');
+  thumb.className = 'video-thumb';
+
+  const isPlaying = playingVideoId === v.yt;
+
+  if (isPlaying) {
+    const iframe = document.createElement('iframe');
+    iframe.className = 'video-iframe';
+    iframe.src = 'https://www.youtube.com/embed/' + encodeURIComponent(v.yt) + '?autoplay=1&rel=0';
+    iframe.title = v.title;
+    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    iframe.setAttribute('allowfullscreen', '');
+    thumb.appendChild(iframe);
+  } else {
+    const img = document.createElement('img');
+    img.src = 'https://img.youtube.com/vi/' + encodeURIComponent(v.yt) + '/mqdefault.jpg';
+    img.alt = v.title;
+    img.loading = 'lazy';
+    img.addEventListener('error', () => {
+      img.style.display = 'none';
+      thumb.style.background = 'linear-gradient(135deg,#1e293b,#0f172a)';
+    });
+    thumb.appendChild(img);
+
+    const play = document.createElement('div');
+    play.className = 'video-play';
+    const inner = document.createElement('span');
+    inner.textContent = '?';
+    play.appendChild(inner);
+    thumb.appendChild(play);
+
+    if (v.duration) {
+      const dur = document.createElement('div');
+      dur.className = 'video-duration';
+      dur.textContent = v.duration;
+      thumb.appendChild(dur);
+    }
+
+    thumb.addEventListener('click', () => {
+      playingVideoId = v.yt;
+      renderVideos();
+    });
+  }
+
+  if (v.mine) {
+    const del = document.createElement('button');
+    del.type = 'button';
+    del.className = 'video-del';
+    del.textContent = '×';
+    del.title = 'Remove video';
+    del.setAttribute('aria-label', 'Remove video');
+    del.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const arr = state.userVideos[state.selectedVideoTopic] || [];
+      state.userVideos[state.selectedVideoTopic] = arr.filter(x => x.id !== v.id);
+      if (playingVideoId === v.yt) playingVideoId = null;
+      saveVideos();
+      renderVideoTopics();
+      renderVideos();
+      toast('Video removed');
+    });
+    card.appendChild(del);
+  }
+
+  const info = document.createElement('div');
+  info.className = 'video-info';
+
+  const title = document.createElement('h4');
+  title.className = 'video-title';
+  title.textContent = v.title;
+
+  const meta = document.createElement('div');
+  meta.className = 'video-meta';
+  const ytIcon = document.createElement('span');
+  ytIcon.className = 'yt-icon';
+  ytIcon.textContent = 'YouTube';
+  const chan = document.createElement('span');
+  chan.textContent = v.channel;
+  meta.append(ytIcon, chan);
+
+  if (v.mine) {
+    const yb = document.createElement('span');
+    yb.className = 'you-badge';
+    yb.textContent = 'You';
+    meta.appendChild(yb);
+  }
+
+  info.append(title, meta);
+  card.append(thumb, info);
+  return card;
+}
+
+function youtubeSearchCard(topicName) {
+  const a = document.createElement('a');
+  a.className = 'video-search-card';
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+  a.href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(topicName + ' tutorial');
+
+  a.innerHTML =
+    '<div class="yt-big">?</div>' +
+    '<h4>Watch more on YouTube</h4>' +
+    '<p>Search “' + escapeHtml(topicName) + '” and explore more explanations.</p>';
+
+  return a;
+}
+
+/* ---------- video form ---------- */
+function closeVideoForm() {
+  const f = $('videoForm');
+  if (f) f.remove();
+}
+
+function openVideoForm() {
+  if (!state.selectedVideoTopic) {
+    toast('Pick a topic first');
+    return;
+  }
+  if ($('videoForm')) {
+    $('videoUrlInput').focus();
+    return;
+  }
+
+  const form = document.createElement('div');
+  form.className = 'note-form';
+  form.id = 'videoForm';
+  form.innerHTML =
+    '<input id="videoTitleInput" type="text" maxlength="80" placeholder="Video title (e.g. Bayes theorem — a visual intro)" autocomplete="off">' +
+    '<input id="videoChannelInput" type="text" maxlength="40" placeholder="Channel name (optional, e.g. 3Blue1Brown)" autocomplete="off">' +
+    '<input id="videoUrlInput" type="url" placeholder="Paste YouTube link or 11-character video ID" autocomplete="off" style="margin-bottom:8px">' +
+    '<div class="note-form-actions">' +
+      '<button class="btn" id="videoSaveBtn" type="button">Post video</button>' +
+      '<button class="btn ghost" id="videoCancelBtn" type="button">Cancel</button>' +
+    '</div>';
+
+  const body = document.querySelector('.videos-body');
+  body.insertBefore(form, $('videoList'));
+
+  $('videoCancelBtn').addEventListener('click', closeVideoForm);
+
+  $('videoUrlInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); $('videoSaveBtn').click(); }
+  });
+
+  $('videoSaveBtn').addEventListener('click', () => {
+    const title = $('videoTitleInput').value.trim();
+    const channel = $('videoChannelInput').value.trim();
+    const urlInput = $('videoUrlInput').value.trim();
+
+    if (!title) { toast('Give your video a title'); $('videoTitleInput').focus(); return; }
+    const yt = parseYouTubeId(urlInput);
+    if (!yt) {
+      toast('That does not look like a YouTube link or ID');
+      $('videoUrlInput').focus();
+      return;
+    }
+
+    const tid = state.selectedVideoTopic;
+    if (!state.userVideos[tid]) state.userVideos[tid] = [];
+    state.userVideos[tid].push({
+      id: 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+      title,
+      channel: channel || 'Shared by you',
+      yt,
+      ts: Date.now()
+    });
+    saveVideos();
+    closeVideoForm();
+    renderVideoTopics();
+    renderVideos();
+    toast('Video added — thanks for sharing');
+  });
+
+  $('videoTitleInput').focus();
+}
+
+/* =========================================================
+   11. RENDER — PROFILE CHIP + VIEW
+   ========================================================= */
+function renderChip() {
+  const btn = $('profileChip');
+  const p = state.profile;
+
+  if (!p) {
+    btn.innerHTML =
+      '<span class="chip-avatar empty">?</span>' +
+      '<span class="chip-text">' +
+        '<span class="chip-name">Set up your profile</span>' +
+        '<span class="chip-sub cta">Add your name &amp; avatar</span>' +
+      '</span>' +
+      '<span class="chip-pencil">??</span>';
+    return;
+  }
+
+  const av = p.avatar
+    ? '<span class="chip-avatar emoji">' + escapeHtml(p.avatar) + '</span>'
+    : '<span class="chip-avatar">' + escapeHtml(initialsOf(p.name)) + '</span>';
+
+  const sub = [p.course, p.year].filter(Boolean).join(' · ') || 'View your profile';
+
+  btn.innerHTML =
+    av +
+    '<span class="chip-text">' +
+      '<span class="chip-name">' + escapeHtml(p.name) + '</span>' +
+      '<span class="chip-sub">' + escapeHtml(sub) + '</span>' +
+    '</span>' +
+    '<span class="chip-pencil">??</span>';
+}
+
+function renderProfileView() {
+  const p = state.profile;
+  const body = $('pvBody');
+
+  if (!p) {
+    body.innerHTML =
+      '<div class="pv-card"><div class="pv-story-empty">You have not created a profile yet.</div></div>';
+    return;
+  }
+
+  const topics = allTopics();
+  const teach = topics.filter(t => (state.levels[t.id] || 0) >= 4);
+  const learn = topics.filter(t => {
+    const l = state.levels[t.id] || 0;
+    return l >= 1 && l <= 2;
+  });
+  const matchCount = computeMatches().length;
+  const notesShared = Object.values(state.userNotes).reduce((a, b) => a + b.length, 0);
+  const videosShared = Object.values(state.userVideos).reduce((a, b) => a + b.length, 0);
+
+  const avatarHtml = p.avatar
+    ? '<div class="pv-avatar emoji">' + escapeHtml(p.avatar) + '</div>'
+    : '<div class="pv-avatar">' + escapeHtml(initialsOf(p.name)) + '</div>';
+
+  const meta = [p.course, p.year].filter(Boolean).join(' · ') || 'Student';
+  const bio = p.bio ? '<div class="pv-bio">“' + escapeHtml(p.bio) + '”</div>' : '';
+
+  const chipFor = (t, cls) => {
+    const tag = DEFAULT_IDS.has(t.id) ? '' : '<span class="pv-custom-tag">custom</span>';
+    return '<span class="pv-chip ' + cls + '">' + escapeHtml(t.name) + tag + '</span>';
+  };
+
+  const teachHtml = teach.length
+    ? '<div class="pv-chip-wrap">' + teach.map(t => chipFor(t, 'give')).join('') + '</div>'
+    : '<div class="pv-empty-note">Mark a topic 4–5 to show what you can teach.</div>';
+
+  const learnHtml = learn.length
+    ? '<div class="pv-chip-wrap">' + learn.map(t => chipFor(t, 'get')).join('') + '</div>'
+    : '<div class="pv-empty-note">Mark a topic 1–2 to show where you need help.</div>';
+
+  const styleHtml = (p.styles && p.styles.length)
+    ? '<div class="pv-mini-chips">' + p.styles.map(s => '<span class="pv-mini-chip">' + escapeHtml(s) + '</span>').join('') + '</div>'
+    : '<div class="pv-story-empty">Not set yet.</div>';
+
+  body.innerHTML =
+    '<div class="pv-hero">' +
+      avatarHtml +
+      '<h2 class="pv-name">' + escapeHtml(p.name) + '</h2>' +
+      '<div class="pv-meta">' + escapeHtml(meta) + '</div>' +
+      bio +
+      '<div class="pv-stats">' +
+        '<div class="pv-stat"><div class="pv-stat-num">' + teach.length + '</div><div class="pv-stat-label">Topics you can teach</div></div>' +
+        '<div class="pv-stat"><div class="pv-stat-num">' + learn.length + '</div><div class="pv-stat-label">Topics you need help with</div></div>' +
+        '<div class="pv-stat"><div class="pv-stat-num">' + matchCount + '</div><div class="pv-stat-label">Study partners found</div></div>' +
+        '<div class="pv-stat"><div class="pv-stat-num">' + (notesShared + videosShared) + '</div><div class="pv-stat-label">Resources shared</div></div>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="pv-card">' +
+      '<div class="pv-card-title">Can teach</div>' + teachHtml +
+    '</div>' +
+
+    '<div class="pv-card">' +
+      '<div class="pv-card-title">Needs help with</div>' + learnHtml +
+    '</div>' +
+
+    '<div class="pv-card">' +
+      '<div class="pv-card-title">Learning story</div>' +
+      '<div class="pv-story-item">' +
+        '<div class="pv-story-key">Biggest challenge right now</div>' +
+        '<div class="pv-story-val' + (p.challenge ? ' quote' : '') + '">' +
+          (p.challenge ? escapeHtml(p.challenge) : '<span class="pv-story-empty">Not set yet.</span>') +
+        '</div>' +
+      '</div>' +
+      '<div class="pv-story-item">' +
+        '<div class="pv-story-key">Learns best through</div>' + styleHtml +
+      '</div>' +
+      '<div class="pv-story-item">' +
+        '<div class="pv-story-key">Peer-teaching experience</div>' +
+        '<div class="pv-story-val">' +
+          (p.experience ? escapeHtml(p.experience) : '<span class="pv-story-empty">Not set yet.</span>') +
+        '</div>' +
+      '</div>' +
+      '<div class="pv-story-item">' +
+        '<div class="pv-story-key">Availability</div>' +
+        '<div class="pv-story-val">' +
+          (p.availability ? escapeHtml(p.availability) : '<span class="pv-story-empty">Not set yet.</span>') +
+        '</div>' +
+      '</div>' +
+      '<div class="pv-story-item">' +
+        '<div class="pv-story-key">Wants to improve</div>' +
+        '<div class="pv-story-val">' +
+          (p.goal ? escapeHtml(p.goal) : '<span class="pv-story-empty">Not set yet.</span>') +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="pv-danger">' +
+      '<button class="btn ghost" id="pvDeleteBtn" type="button">Remove my profile</button>' +
+    '</div>';
+
+  const del = $('pvDeleteBtn');
+  if (del) {
+    del.addEventListener('click', () => {
+      if (!confirm('Remove your profile? Your topic levels, notes, and videos are kept.')) return;
+      state.profile = null;
+      store.remove(K.profile);
+      closeProfileView();
+      renderAll();
+      toast('Profile removed');
+    });
+  }
+}
+
+/* =========================================================
+   12. RENDER ALL
+   ========================================================= */
+function renderAll() {
+  renderChip();
+  renderTopics();
+  renderMatches();
+  renderNotesTopics();
+  renderNotes();
+  renderVideoTopics();
+  renderVideos();
+  if (!$('profileView').hidden) renderProfileView();
+}
+
+/* =========================================================
+   13. MODAL (profile form)
+   ========================================================= */
+const AVATAR_OPTIONS = ['', '?????', '?????', '?????', '??', '??', '??', '??', '??', '??'];
+const LEARNING_STYLES = [
+  'Visual diagrams', 'Step-by-step', 'Real-life examples', 'Practice problems',
+  'Group discussion', 'Teaching others', 'Short videos', 'Reading & notes'
+];
+
+let modalAvatar = '';
+let modalStyles = new Set();
+
+function renderEmojiRow() {
+  const row = $('emojiRow');
+  row.innerHTML = '';
+  AVATAR_OPTIONS.forEach(opt => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'emoji-opt' + (modalAvatar === opt ? ' on' : '');
+    if (opt === '') {
+      const name = $('fName').value.trim() || (state.profile && state.profile.name) || '';
+      b.textContent = name ? initialsOf(name) : 'Aa';
+      b.title = 'Use initials';
+      b.style.fontSize = '14px';
+    } else {
+      b.textContent = opt;
+    }
+    b.addEventListener('click', () => {
+      modalAvatar = opt;
+      renderEmojiRow();
+    });
+    row.appendChild(b);
+  });
+}
+
+function renderStyleChips() {
+  const wrap = $('styleChips');
+  wrap.innerHTML = '';
+  LEARNING_STYLES.forEach(s => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'style-chip' + (modalStyles.has(s) ? ' on' : '');
+    b.textContent = s;
+    b.addEventListener('click', () => {
+      if (modalStyles.has(s)) modalStyles.delete(s);
+      else modalStyles.add(s);
+      renderStyleChips();
+    });
+    wrap.appendChild(b);
+  });
+}
+
+function updateLock() {
+  const locked = !$('overlay').hidden || !$('profileView').hidden;
+  document.body.classList.toggle('locked', locked);
+}
+
+function openModal() {
+  const p = state.profile;
+  $('modalTitle').textContent = p ? 'Edit your profile' : 'Create your profile';
+  $('saveBtn').textContent = p ? 'Save changes' : 'Save profile';
+  $('deleteProfileBtn').hidden = !p;
+
+  $('fName').value      = p ? (p.name || '') : '';
+  $('fCourse').value    = p ? (p.course || '') : '';
+  $('fYear').value      = p ? (p.year || '1st year') : '1st year';
+  $('fBio').value       = p ? (p.bio || '') : '';
+  $('fChallenge').value = p ? (p.challenge || '') : '';
+  $('fExperience').value = p ? (p.experience || '') : '';
+  $('fAvailability').value = p ? (p.availability || '') : '';
+  $('fGoal').value      = p ? (p.goal || '') : '';
+
+  modalAvatar = p ? (p.avatar || '') : '';
+  modalStyles = new Set(p && p.styles ? p.styles : []);
+
+  $('nameField').classList.remove('invalid');
+
+  renderEmojiRow();
+  renderStyleChips();
+
+  $('overlay').hidden = false;
+  updateLock();
+
+  setTimeout(() => $('fName').focus(), 60);
+}
+
+function closeModal() {
+  $('overlay').hidden = true;
+  updateLock();
+}
+
+function openProfileView() {
+  renderProfileView();
+  $('profileView').hidden = false;
+  updateLock();
+  $('profileView').scrollTop = 0;
+}
+
+function closeProfileView() {
+  $('profileView').hidden = true;
+  updateLock();
+}
+
+/* =========================================================
+   14. EVENTS
+   ========================================================= */
+/* --- topic add form --- */
+$('addTopicBtn').addEventListener('click', () => {
+  const f = $('addTopicForm');
+  f.hidden = !f.hidden;
+  if (!f.hidden) $('newTopicName').focus();
+});
+
+$('cancelTopicBtn').addEventListener('click', () => {
+  $('addTopicForm').hidden = true;
+  $('newTopicName').value = '';
+  $('newTopicSubject').value = '';
+});
+
+$('saveTopicBtn').addEventListener('click', () => {
+  const name = $('newTopicName').value.trim();
+  const subject = $('newTopicSubject').value.trim();
+
+  if (!name) { toast('Enter a topic name'); $('newTopicName').focus(); return; }
+
+  const exists = allTopics().some(t => t.name.toLowerCase() === name.toLowerCase());
+  if (exists) { toast('That topic already exists'); return; }
+
+  const id = 'c' + Date.now().toString(36);
+  state.customTopics.push({ id, name, subject: subject || 'General' });
+  state.levels[id] = 3;
+  saveCustom();
+  saveLevels();
+
+  $('newTopicName').value = '';
+  $('newTopicSubject').value = '';
+  $('addTopicForm').hidden = true;
+
+  state.selectedTopic = id;
+  state.selectedVideoTopic = id;
+  renderAll();
+  toast('Topic added');
+});
+
+$('newTopicName').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); $('saveTopicBtn').click(); }
+});
+$('newTopicSubject').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); $('saveTopicBtn').click(); }
+});
+
+/* --- notes --- */
+$('addNoteBtn').addEventListener('click', openNoteForm);
+
+/* --- videos --- */
+$('addVideoBtn').addEventListener('click', openVideoForm);
+
+/* --- profile chip --- */
+$('profileChip').addEventListener('click', () => {
+  if (state.profile) openProfileView();
+  else openModal();
+});
+
+$('pvBack').addEventListener('click', closeProfileView);
+$('pvEdit').addEventListener('click', openModal);
+
+/* --- modal --- */
+$('closeModal').addEventListener('click', closeModal);
+$('cancelBtn').addEventListener('click', closeModal);
+
+$('overlay').addEventListener('click', e => {
+  if (e.target === $('overlay')) closeModal();
+});
+
+$('fName').addEventListener('input', () => {
+  $('nameField').classList.remove('invalid');
+  if (modalAvatar === '') renderEmojiRow();
+});
+
+$('profileForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('fName').value.trim();
+  if (!name) {
+    $('nameField').classList.add('invalid');
+    $('fName').focus();
+    return;
+  }
+  $('nameField').classList.remove('invalid');
+
+  state.profile = {
+    name,
+    course: $('fCourse').value.trim(),
+    year: $('fYear').value,
+    bio: $('fBio').value.trim(),
+    avatar: modalAvatar,
+    challenge: $('fChallenge').value.trim(),
+    styles: Array.from(modalStyles),
+    experience: $('fExperience').value,
+    availability: $('fAvailability').value.trim(),
+    goal: $('fGoal').value.trim()
+  };
+
+  writeJSON(K.profile, state.profile);
+  closeModal();
+  renderAll();
+  toast('Profile saved');
+});
+
+$('deleteProfileBtn').addEventListener('click', () => {
+  if (!confirm('Remove your profile? Your topic levels, notes, and videos are kept.')) return;
+  state.profile = null;
+  store.remove(K.profile);
+  closeModal();
+  renderAll();
+  toast('Profile removed');
+});
+
+/* --- keyboard --- */
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (!$('overlay').hidden) closeModal();
+  else if (!$('profileView').hidden) closeProfileView();
+  else { closeNoteForm(); closeVideoForm(); }
+});
+
+/* =========================================================
+   15. BOOT
+   ========================================================= */
+renderAll();
+
+/* First visit ? nudge the user to set up a profile */
+if (!state.profile && store.get(K.seen) === null) {
+  store.set(K.seen, '1');
+  setTimeout(openModal, 350);
+}
+</script>
+</body>
+</html>
